@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 160" role="img" aria-label="trocado">
+  <title>trocado — mark vector</title>
+  <defs>
+    <linearGradient id="lime" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#D4FF00"/>
+      <stop offset="100%" stop-color="#A3E635"/>
+    </linearGradient>
+  </defs>
+  <!-- Rastro: chevron violet semi-transparente -->
+  <path d="M 20 30 L 80 80 L 20 130" fill="none" stroke="#06B6D4" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
+  <!-- Direção: chevron lime sólido -->
+  <path d="M 70 30 L 130 80 L 70 130" fill="none" stroke="url(#lime)" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Alvo: laser orange dot -->
+  <circle cx="130" cy="80" r="9" fill="#FB923C"/>
+</svg>

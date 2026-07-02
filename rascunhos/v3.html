@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leandro Trocado · A field manual.</title>
+<meta name="description" content="Leandro Trocado — manual de campo. Como penso, como trabalho, o que conheço.">
+<link rel="icon" type="image/svg+xml" href="brand/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F2EFE6;
+    --paper-2: #E8E4D6;
+    --ink: #0A0A0A;
+    --ink-soft: #2A2A28;
+    --ink-mute: #6B6B66;
+    --ink-dim: #A8A8A0;
+    --line: rgba(10, 10, 10, 0.12);
+    --line-strong: rgba(10, 10, 10, 0.4);
+    --lime: #C6F000;
+    --lime-deep: #A8D300;
+    --cyan: #06B6D4;
+    --orange: #FB923C;
+    --sans: 'Space Grotesk', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: var(--paper); scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.4;
+    font-size: 18px;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  ::selection { background: var(--lime); color: var(--ink); }
+  a { color: inherit; text-decoration: none; }
+
+  /* Grão de papel */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.04 0 0 0 0 0.04 0 0 0 0 0.04 0 0 0 0.5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.5;
+    pointer-events: none;
+    z-index: 1;
+    mix-blend-mode: multiply;
+  }
+
+  /* Linha técnica do manual no topo */
+  .head-rail {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: 32px;
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+    z-index: 50;
+    display: flex; align-items: center;
+    padding: 0 24px;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--ink-mute);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    justify-content: space-between;
+  }
+  .head-rail .left, .head-rail .right { display: flex; gap: 24px; align-items: center; }
+  .head-rail .right a { color: var(--ink-mute); transition: color 0.2s; }
+  .head-rail .right a:hover { color: var(--ink); }
+  .head-rail .stamp { color: var(--ink); font-weight: 500; }
+  .head-rail .blink {
+    display: inline-block;
+    width: 6px; height: 6px;
+    background: var(--lime);
+    margin-right: 6px;
+    animation: blink 1.5s ease-in-out infinite;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 32px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* CAPA */
+  .cover {
+    min-height: calc(100vh - 32px);
+    margin-top: 32px;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-content: space-between;
+    padding: 64px 0;
+    position: relative;
+  }
+  .cover-top {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--ink-mute);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .cover-top div span { display: block; color: var(--ink); font-weight: 500; font-size: 0.85rem; margin-top: 4px; }
+
+  .cover-title {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: clamp(4rem, 18vw, 17rem);
+    letter-spacing: -0.07em;
+    line-height: 0.85;
+    color: var(--ink);
+    margin: 80px 0;
+  }
+  .cover-title .light {
+    font-weight: 300;
+    color: var(--ink-mute);
+    font-style: italic;
+    letter-spacing: -0.04em;
+  }
+  .cover-title .accent {
+    background: var(--lime);
+    padding: 0 8px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+
+  .cover-bottom {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 48px;
+    align-items: end;
+    padding-top: 32px;
+    border-top: 2px solid var(--ink);
+  }
+  .cover-author {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+  .cover-author .role {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--ink-mute);
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 8px;
+    display: block;
+  }
+  .cover-meta {
+    text-align: right;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--ink-mute);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .cover-meta .num {
+    font-size: 4rem;
+    color: var(--ink);
+    font-weight: 700;
+    display: block;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin-bottom: 8px;
+  }
+
+  /* Páginas do manual */
+  .page {
+    padding: 120px 0;
+    border-top: 1px solid var(--line);
+    position: relative;
+  }
+  .page::before {
+    content: attr(data-folio);
+    position: absolute;
+    top: 24px; right: 32px;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--ink-mute);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .page-header {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 24px;
+    margin-bottom: 80px;
+    align-items: start;
+  }
+  .page-num {
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--ink);
+    letter-spacing: 0.1em;
+    padding-top: 14px;
+    border-top: 2px solid var(--ink);
+  }
+  .page-title {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    letter-spacing: -0.045em;
+    line-height: 0.95;
+    color: var(--ink);
+    padding-top: 8px;
+  }
+  .page-title .lime {
+    background: var(--lime);
+    padding: 0 8px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+  .page-title .it { font-style: italic; font-weight: 400; color: var(--ink-mute); }
+
+  /* MANIFESTO */
+  .manifesto-body {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 24px;
+  }
+  .manifesto-aside {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--ink-mute);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding-top: 8px;
+  }
+  .manifesto-text {
+    max-width: 720px;
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: clamp(1.25rem, 2vw, 1.6rem);
+    line-height: 1.45;
+    color: var(--ink-soft);
+    letter-spacing: -0.01em;
+  }
+  .manifesto-text p {
+    margin-bottom: 32px;
+  }
+  .manifesto-text p:last-child { margin-bottom: 0; }
+  .manifesto-text strong { color: var(--ink); font-weight: 600; }
+  .manifesto-text em { font-style: normal; background: var(--lime); padding: 0 4px; }
+  .manifesto-text .pull {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    letter-spacing: -0.04em;
+    line-height: 1;
+    color: var(--ink);
+    margin: 48px 0;
+    padding-left: 24px;
+    border-left: 4px solid var(--ink);
+    max-width: none;
+  }
+
+  /* INDEX (table of contents style) */
+  .index-list { display: grid; grid-template-columns: 80px 1fr; gap: 0; }
+  .index-list .spacer { grid-column: 1; }
+  .index-list ol { list-style: none; grid-column: 2; }
+  .index-list li {
+    display: grid;
+    grid-template-columns: 60px 1fr auto;
+    gap: 32px;
+    align-items: baseline;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--line);
+    transition: all 0.2s;
+    cursor: default;
+  }
+  .index-list li:hover { background: rgba(198, 240, 0, 0.08); }
+  .index-list li:hover .id-num { color: var(--ink); }
+  .index-list li:first-child { border-top: 1px solid var(--ink); }
+  .index-list li:last-child { border-bottom: 1px solid var(--ink); }
+  .index-list .id-num {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--ink-mute);
+    letter-spacing: 0.15em;
+  }
+  .index-list .id-text {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: clamp(1.5rem, 3vw, 2.4rem);
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+  }
+  .index-list .id-text .sub {
+    display: block;
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 0.95rem;
+    color: var(--ink-mute);
+    letter-spacing: 0;
+    margin-top: 6px;
+    line-height: 1.4;
+    max-width: 600px;
+  }
+  .index-list .id-tags {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--ink-mute);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-align: right;
+    max-width: 220px;
+  }
+
+  /* PRINCÍPIOS */
+  .principles-list {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 24px;
+  }
+  .principles-list .spacer { grid-column: 1; }
+  .principles-list ol {
+    list-style: none;
+    grid-column: 2;
+    counter-reset: pr;
+    border-top: 2px solid var(--ink);
+  }
+  .principles-list li {
+    counter-increment: pr;
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 32px;
+    padding: 40px 0;
+    border-bottom: 1px solid var(--line);
+    align-items: start;
+  }
+  .principles-list li::before {
+    content: counter(pr, decimal-leading-zero);
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--ink-mute);
+    letter-spacing: 0.15em;
+    padding-top: 12px;
+  }
+  .principles-list li .body { max-width: 680px; }
+  .principles-list li .t {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: clamp(1.4rem, 2.5vw, 2rem);
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+  .principles-list li .d {
+    font-family: var(--sans);
+    font-size: 1.05rem;
+    line-height: 1.5;
+    color: var(--ink-mute);
+  }
+
+  /* NUMBERS / STATEMENT */
+  .stat-wall {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 24px;
+  }
+  .stat-wall .spacer { grid-column: 1; }
+  .stat-wall .stack {
+    grid-column: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .stat-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 32px;
+    align-items: baseline;
+    padding: 32px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .stat-row:first-child { border-top: 2px solid var(--ink); }
+  .stat-row:last-child { border-bottom: 2px solid var(--ink); }
+  .stat-row .v {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: clamp(3rem, 9vw, 8rem);
+    letter-spacing: -0.06em;
+    line-height: 0.9;
+    color: var(--ink);
+  }
+  .stat-row .v .unit {
+    color: var(--ink-mute);
+    font-weight: 400;
+    font-style: italic;
+    font-size: 0.5em;
+    letter-spacing: -0.04em;
+  }
+  .stat-row .v .marker {
+    background: var(--lime);
+    padding: 0 6px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+  .stat-row .k {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--ink-mute);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    line-height: 1.4;
+    text-align: right;
+    max-width: 280px;
+  }
+  .stat-row .k strong { color: var(--ink); font-weight: 500; display: block; margin-bottom: 4px; }
+
+  .cert-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 40px;
+    margin-left: 104px;
+    padding: 18px 28px;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 600;
+    transition: all 0.25s;
+    border: 2px solid var(--ink);
+  }
+  .cert-cta:hover { background: var(--lime); color: var(--ink); border-color: var(--lime); }
+  .cert-cta .arrow { transition: transform 0.25s; }
+  .cert-cta:hover .arrow { transform: translate(4px, -4px); }
+
+  /* KNOW */
+  .know-block {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 24px;
+  }
+  .know-block .spacer { grid-column: 1; }
+  .know-grid {
+    grid-column: 2;
+    columns: 3;
+    column-gap: 32px;
+    column-rule: 1px solid var(--line);
+  }
+  .know-cat {
+    break-inside: avoid;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+  }
+  .know-cat h4 {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--ink);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--ink);
+  }
+  .know-cat ul { list-style: none; }
+  .know-cat li {
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 1.05rem;
+    color: var(--ink-soft);
+    padding: 6px 0;
+    letter-spacing: -0.01em;
+  }
+  .know-cat li .sub {
+    font-family: var(--mono);
+    font-weight: 400;
+    font-size: 0.75rem;
+    color: var(--ink-mute);
+    letter-spacing: 0.05em;
+    margin-left: 6px;
+  }
+
+  /* NOW */
+  .now-block {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 24px;
+  }
+  .now-block .spacer { grid-column: 1; }
+  .now-content {
+    grid-column: 2;
+    max-width: 760px;
+  }
+  .now-stamp {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--ink-mute);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--ink);
+    display: flex;
+    justify-content: space-between;
+  }
+  .now-stamp .live { color: var(--ink); display: inline-flex; align-items: center; gap: 8px; }
+  .now-stamp .live::before {
+    content: '';
+    display: inline-block;
+    width: 8px; height: 8px;
+    background: var(--lime);
+    border-radius: 50%;
+    animation: blink 1.5s ease-in-out infinite;
+  }
+
+  .now-letter {
+    font-family: var(--sans);
+    font-size: clamp(1.2rem, 2vw, 1.55rem);
+    line-height: 1.55;
+    color: var(--ink-soft);
+    letter-spacing: -0.01em;
+  }
+  .now-letter p { margin-bottom: 28px; }
+  .now-letter p:last-child { margin-bottom: 0; }
+  .now-letter strong { color: var(--ink); font-weight: 600; }
+  .now-letter em { font-style: normal; background: var(--lime); padding: 0 4px; }
+  .now-letter .sig {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--ink-mute);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+  }
+  .now-letter .sig strong { color: var(--ink); }
+
+  /* CONTACT */
+  .contact-block {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 24px;
+  }
+  .contact-block .spacer { grid-column: 1; }
+  .contact-list {
+    grid-column: 2;
+    display: grid;
+    gap: 0;
+  }
+  .contact-row {
+    display: grid;
+    grid-template-columns: 180px 1fr auto;
+    gap: 32px;
+    align-items: baseline;
+    padding: 36px 0;
+    border-bottom: 1px solid var(--line);
+    transition: all 0.2s;
+  }
+  .contact-row:first-child { border-top: 2px solid var(--ink); }
+  .contact-row:last-child { border-bottom: 2px solid var(--ink); }
+  .contact-row:hover { background: var(--lime); padding-left: 16px; padding-right: 16px; }
+  .contact-row .cat {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--ink-mute);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .contact-row .v {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: clamp(1.6rem, 3vw, 2.6rem);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: var(--ink);
+  }
+  .contact-row .v .arrow {
+    color: var(--ink);
+    transition: transform 0.25s;
+    display: inline-block;
+    margin-left: 12px;
+  }
+  .contact-row:hover .v .arrow { transform: translate(8px, -8px); }
+  .contact-row .hint {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--ink-mute);
+    letter-spacing: 0.1em;
+    text-align: right;
+    max-width: 200px;
+    line-height: 1.4;
+  }
+  .contact-row:hover .hint { color: var(--ink); }
+
+  /* COLOFON / footer */
+  .colofon {
+    padding: 80px 0 40px;
+    border-top: 2px solid var(--ink);
+    margin-top: 80px;
+  }
+  .colofon-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 32px;
+    margin-bottom: 64px;
+  }
+  .colofon-grid h5 {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--ink);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .colofon-grid p {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--ink-mute);
+    letter-spacing: 0.05em;
+    line-height: 1.6;
+  }
+  .colofon-mark {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: clamp(4rem, 14vw, 13rem);
+    letter-spacing: -0.07em;
+    line-height: 0.85;
+    color: var(--ink);
+    margin-bottom: 32px;
+  }
+  .colofon-mark .lime {
+    background: var(--lime);
+    padding: 0 8px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+  .colofon-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--ink-mute);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 900px) {
+    .head-rail { font-size: 0.6rem; padding: 0 16px; }
+    .head-rail .left .mid, .head-rail .right .mid { display: none; }
+    .cover { padding: 32px 0; }
+    .cover-top { grid-template-columns: 1fr; }
+    .cover-bottom { grid-template-columns: 1fr; }
+    .cover-meta { text-align: left; }
+    .page-header, .manifesto-body, .principles-list, .stat-wall, .know-block, .now-block, .contact-block, .index-list { grid-template-columns: 1fr; }
+    .page-header { gap: 16px; margin-bottom: 48px; }
+    .page-num { padding-top: 0; padding-bottom: 8px; }
+    .manifesto-aside, .index-list .spacer, .principles-list .spacer, .stat-wall .spacer, .know-block .spacer, .now-block .spacer, .contact-block .spacer { display: none; }
+    .know-grid { columns: 1; }
+    .principles-list li { grid-template-columns: 60px 1fr; gap: 16px; }
+    .stat-row { grid-template-columns: 1fr; gap: 12px; }
+    .stat-row .k { text-align: left; }
+    .contact-row { grid-template-columns: 1fr; gap: 8px; padding: 24px 0; }
+    .contact-row .hint { text-align: left; max-width: none; }
+    .cert-cta { margin-left: 0; }
+    .colofon-grid { grid-template-columns: 1fr; }
+    .index-list li { grid-template-columns: 40px 1fr; }
+    .index-list .id-tags { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="head-rail">
+  <div class="left">
+    <span class="stamp"><span class="blink"></span>FIELD MANUAL · v.3</span>
+    <span class="mid">// LEANDRO TROCADO</span>
+  </div>
+  <div class="right">
+    <a href="#mani">/manifesto</a>
+    <a href="#idx" class="mid">/index</a>
+    <a href="#numbers" class="mid">/numbers</a>
+    <a href="#now">/now</a>
+    <a href="#contact">/contact</a>
+  </div>
+</div>
+
+<header class="cover">
+  <div class="wrap">
+    <div class="cover-top">
+      <div>// série<span>field manual</span></div>
+      <div>// edição<span>03 · light edition</span></div>
+      <div>// publicado<span>2026 · rio de janeiro</span></div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <h1 class="cover-title">
+      A <span class="light">field</span><br>
+      <span class="accent">manual.</span>
+    </h1>
+  </div>
+
+  <div class="wrap">
+    <div class="cover-bottom">
+      <div class="cover-author">
+        Leandro Trocado<br>
+        <span class="role">// operador no ponto entre técnica, gestão & ia</span>
+      </div>
+      <div class="cover-meta">
+        <span class="num">03</span>
+        edição<br>
+        light · brutalist
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="mani" class="page" data-folio="§ 01 · MANIFESTO">
+  <div class="wrap">
+    <div class="page-header">
+      <div class="page-num">§ 01</div>
+      <h2 class="page-title">
+        Direção é o<br>
+        novo <span class="lime">recurso.</span>
+      </h2>
+    </div>
+
+    <div class="manifesto-body">
+      <div class="manifesto-aside">
+        // pequeno<br>
+        manifesto<br>
+        de bolso
+      </div>
+      <div class="manifesto-text">
+        <p>Não trabalho com tecnologia. <strong>Trabalho com direção.</strong> Tecnologia é meio. Decisão é produto. Vetor é o que entrego.</p>
+
+        <p>Em vinte anos de prática, aprendi que o problema raramente é técnico. É de <em>enquadramento</em>. Reduzo ruído antes de mover. Isolo a variável antes de prometer. Declaro o critério de sucesso antes de começar.</p>
+
+        <div class="pull">Aceleração sem direção é apenas movimento caro.</div>
+
+        <p>Trabalho na intersecção entre código, gestão, regulação e inteligência artificial. Trato cada uma como dimensão, não como caixa. Sistemas críticos precisam de coerência entre o que a norma exige, o que o usuário consegue operar e o que a infraestrutura sustenta — três pesos diferentes a cada decisão.</p>
+
+        <p>Estou em transição consciente: <strong>do controle para a confiança estruturada</strong>. Aprendo a soltar sem perder qualidade. A delegar sem perder visibilidade. É o trabalho interior que falta no currículo de quase todo gestor técnico.</p>
+
+        <p>Aprender é parte do ofício. Não é fase. Mil horas em quatro anos significam <em>uma hora por dia útil</em> em ritmo sustentado — em paralelo a trabalho full-time, equipe técnica e família. Esse é o ritmo padrão.</p>
+
+        <p>Este site é um manual de campo. Curto, direto, sem floreio. Se você está aqui, é porque a forma como eu penso te interessa mais do que onde eu trabalho.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="idx" class="page" data-folio="§ 02 · INDEX OF WORK">
+  <div class="wrap">
+    <div class="page-header">
+      <div class="page-num">§ 02</div>
+      <h2 class="page-title">
+        Index of <span class="lime">work.</span>
+      </h2>
+    </div>
+
+    <div class="index-list">
+      <div class="spacer"></div>
+      <ol>
+        <li>
+          <span class="id-num">/01</span>
+          <span class="id-text">
+            IA aplicada a operação crítica
+            <span class="sub">Modelos de linguagem em fluxos reais. Agentes especializados, ingestão de normativos, automação de análise documental, geração assistida.</span>
+          </span>
+          <span class="id-tags">claude api · agent skills · mcps</span>
+        </li>
+        <li>
+          <span class="id-num">/02</span>
+          <span class="id-text">
+            Sistemas de missão crítica
+            <span class="sub">Modelagem e construção de sistemas que pagam contas reais. State machine, integrações regulatórias, compliance como restrição de design.</span>
+          </span>
+          <span class="id-tags">laravel · tall · oracle · icp-brasil</span>
+        </li>
+        <li>
+          <span class="id-num">/03</span>
+          <span class="id-text">
+            Estratégia & governança técnica
+            <span class="sub">Roadmap plurianual. PDTI com horizonte real. COBIT 2019 como tração, não burocracia.</span>
+          </span>
+          <span class="id-tags">pdti · cobit · roadmap</span>
+        </li>
+        <li>
+          <span class="id-num">/04</span>
+          <span class="id-text">
+            Liderança técnica
+            <span class="sub">Equipe técnica entre análise, dados e infraestrutura. Migração consciente de controle para confiança estruturada.</span>
+          </span>
+          <span class="id-tags">people · mentoria · trust</span>
+        </li>
+        <li>
+          <span class="id-num">/05</span>
+          <span class="id-text">
+            Clear thinking aplicado
+            <span class="sub">Frameworks decisórios escolhidos pelo contexto. Decisão tratada como produto entregável.</span>
+          </span>
+          <span class="id-tags">scqa · ooda · grow · prep</span>
+        </li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="principles" class="page" data-folio="§ 03 · OPERATING PRINCIPLES">
+  <div class="wrap">
+    <div class="page-header">
+      <div class="page-num">§ 03</div>
+      <h2 class="page-title">
+        Princípios <span class="it">operacionais.</span>
+      </h2>
+    </div>
+
+    <div class="principles-list">
+      <div class="spacer"></div>
+      <ol>
+        <li>
+          <div class="body">
+            <div class="t">Direção antes de velocidade.</div>
+            <div class="d">Acelerar errado é caro. Calibrar o vetor é mais barato que recuperar a trajetória.</div>
+          </div>
+        </li>
+        <li>
+          <div class="body">
+            <div class="t">Critério de sucesso declarado.</div>
+            <div class="d">Sem critério verificável, não começo. Sem critério, não termino — só paro. Vale para código, decisão e proposta.</div>
+          </div>
+        </li>
+        <li>
+          <div class="body">
+            <div class="t">Frameworks por contexto.</div>
+            <div class="d">SCQA para complexidade. OODA para crise. GROW para planejamento. PCRS para prompt. Não existe framework universal.</div>
+          </div>
+        </li>
+        <li>
+          <div class="body">
+            <div class="t">Coerência sobre consenso.</div>
+            <div class="d">Prefiro uma decisão coerente sozinha a um consenso confuso. Consenso vem depois, quando a coerência já está clara.</div>
+          </div>
+        </li>
+        <li>
+          <div class="body">
+            <div class="t">Simplicidade é entrega.</div>
+            <div class="d">Complexidade é entrada. Simplicidade é saída. Trabalho é a diferença entre as duas.</div>
+          </div>
+        </li>
+        <li>
+          <div class="body">
+            <div class="t">Aprender é parte do dia.</div>
+            <div class="d">Estudo formal contínuo. Não é hobby — é infraestrutura. Sem cadência de aprendizado, a prática estaciona.</div>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="numbers" class="page" data-folio="§ 04 · NUMBERS">
+  <div class="wrap">
+    <div class="page-header">
+      <div class="page-num">§ 04</div>
+      <h2 class="page-title">
+        Números <span class="lime">declarados.</span>
+      </h2>
+    </div>
+
+    <div class="stat-wall">
+      <div class="spacer"></div>
+      <div class="stack">
+        <div class="stat-row">
+          <div class="v">20<span class="unit">+ anos</span></div>
+          <div class="k"><strong>// experiência</strong>Atuação contínua em TI desde os primeiros 2000s. Da web ao executive layer.</div>
+        </div>
+        <div class="stat-row">
+          <div class="v"><span class="marker">1.067</span><span class="unit"> horas</span></div>
+          <div class="k"><strong>// estudo formal</strong>Aprendizado declarado entre 2022 e 2026. Aproximadamente uma hora por dia útil em ritmo sustentado.</div>
+        </div>
+        <div class="stat-row">
+          <div class="v">16<span class="unit"> trilhas</span></div>
+          <div class="k"><strong>// concluídas</strong>Laravel, Rust, Engenharia de Software, Vue.js 3, FinOps, Arquitetura da Informação, Tech Lead, Gestão Ágil, Pensamento Estratégico, Governança de TI, Gestão da Inovação, COBIT 2019, Modelagem de Processos + 3.</div>
+        </div>
+        <div class="stat-row">
+          <div class="v">7<span class="unit"> áreas</span></div>
+          <div class="k"><strong>// cursos avulsos</strong>Programação, Front-end, DevOps, UX/Design, Data Science, Inovação/Gestão, Inteligência Artificial.</div>
+        </div>
+        <div class="stat-row">
+          <div class="v">1<span class="unit">.</span></div>
+          <div class="k"><strong>// direção</strong>Uma só. Direção é o novo recurso.</div>
+        </div>
+      </div>
+    </div>
+
+    <a href="https://cursos.alura.com.br/user/leandro-trocado/fullCertificate/efd6880223b23a4ba338acbad9576271" target="_blank" rel="noopener" class="cert-cta">
+      Ver certificado público <span class="arrow">↗</span>
+    </a>
+  </div>
+</section>
+
+<section id="know" class="page" data-folio="§ 05 · WHAT I KNOW">
+  <div class="wrap">
+    <div class="page-header">
+      <div class="page-num">§ 05</div>
+      <h2 class="page-title">
+        Repertório <span class="it">de campo.</span>
+      </h2>
+    </div>
+
+    <div class="know-block">
+      <div class="spacer"></div>
+      <div class="know-grid">
+        <div class="know-cat">
+          <h4>// stack web</h4>
+          <ul>
+            <li>Laravel<span class="sub">php</span></li>
+            <li>TALL Stack<span class="sub">tailwind alpine livewire</span></li>
+            <li>Vue.js 3</li>
+            <li>HTML / CSS / JS</li>
+          </ul>
+        </div>
+
+        <div class="know-cat">
+          <h4>// dados & infra</h4>
+          <ul>
+            <li>Oracle<span class="sub">sql avançado</span></li>
+            <li>FinOps</li>
+            <li>DevOps fundamentos</li>
+            <li>Rust<span class="sub">em estudo</span></li>
+          </ul>
+        </div>
+
+        <div class="know-cat">
+          <h4>// ia & agentes</h4>
+          <ul>
+            <li>Claude API / SDK</li>
+            <li>Agent Skills</li>
+            <li>MCP servers</li>
+            <li>Prompt engineering</li>
+          </ul>
+        </div>
+
+        <div class="know-cat">
+          <h4>// gestão & método</h4>
+          <ul>
+            <li>COBIT 2019</li>
+            <li>Gestão Ágil</li>
+            <li>Modelagem de Processos</li>
+            <li>Tech Lead playbook</li>
+          </ul>
+        </div>
+
+        <div class="know-cat">
+          <h4>// pensamento</h4>
+          <ul>
+            <li>Pensamento sistêmico</li>
+            <li>Clear thinking</li>
+            <li>Frameworks decisórios<span class="sub">scqa ooda grow</span></li>
+            <li>Arquitetura da informação</li>
+          </ul>
+        </div>
+
+        <div class="know-cat">
+          <h4>// negócios</h4>
+          <ul>
+            <li>Controladoria & finanças</li>
+            <li>Previdência complementar</li>
+            <li>Compliance regulatório</li>
+            <li>Investimentos</li>
+          </ul>
+        </div>
+
+        <div class="know-cat">
+          <h4>// liderança</h4>
+          <ul>
+            <li>Gestão de equipe técnica</li>
+            <li>Pensamento estratégico</li>
+            <li>Governança de TI</li>
+            <li>Gestão da inovação</li>
+          </ul>
+        </div>
+
+        <div class="know-cat">
+          <h4>// interesses</h4>
+          <ul>
+            <li>Neurociência aplicada</li>
+            <li>Filosofia</li>
+            <li>História & arte</li>
+            <li>Aprendizado rápido</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="now" class="page" data-folio="§ 06 · WHAT I'M DOING NOW">
+  <div class="wrap">
+    <div class="page-header">
+      <div class="page-num">§ 06</div>
+      <h2 class="page-title">
+        Now<span class="lime">.</span>
+      </h2>
+    </div>
+
+    <div class="now-block">
+      <div class="spacer"></div>
+      <div class="now-content">
+        <div class="now-stamp">
+          <span class="live">live</span>
+          <span>// atualizado 2026.05.13</span>
+        </div>
+
+        <div class="now-letter">
+          <p>Esta semana, o vetor aponta para <strong>três frentes simultâneas</strong>. Destravando integrações de API com prazo apertado — projetos críticos com impacto direto em operação. Modelando um sistema novo de empréstimos em Laravel/TALL/Oracle, com governança de taxa, regras automáticas de aprovação e múltiplas formas de amortização.</p>
+
+          <p>Em paralelo, construo um sistema de processo decisório com <em>máquina de estado</em>: fluxos de parecer, regras de suplência, integração com ICP-Brasil para assinatura eletrônica. É o tipo de projeto que costura técnica, regulação e usabilidade em proporções diferentes a cada decisão.</p>
+
+          <p>No background, estruturo IA aplicada à gestão de TI usando Claude Code, Agent Skills e MCPs. Quatro skills pessoais já estão em produção: para propostas técnicas, ingestão de normativos, briefings diários e weekly status. Resultado mensurável em horas economizadas e qualidade de saída.</p>
+
+          <p>E há a frente lenta, que não cabe em sprint: o <strong>PDTI 2026-2030</strong>, uma estratégia de cinco anos costurando inovação, segurança e modernização. Pensar em horizonte longo é exercício raro num cotidiano de incêndio.</p>
+
+          <p>Internamente, sigo estudando <em>maturidade emocional e relacional na liderança técnica</em>. Migrar do controle para confiança estruturada não acontece sozinho. É leitura, prática, supervisão, retrospectiva. É o que ainda falta no currículo de gestor.</p>
+
+          <div class="sig">
+            <strong>// LT</strong> · Rio de Janeiro, 22.9° S<br>
+            // próxima atualização: quando o vetor mudar
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="page" data-folio="§ 07 · CONNECT">
+  <div class="wrap">
+    <div class="page-header">
+      <div class="page-num">§ 07</div>
+      <h2 class="page-title">
+        Canais <span class="lime">abertos.</span>
+      </h2>
+    </div>
+
+    <div class="contact-block">
+      <div class="spacer"></div>
+      <div class="contact-list">
+        <a href="https://www.linkedin.com/in/trocado/" target="_blank" rel="noopener" class="contact-row">
+          <div class="cat">// linkedin</div>
+          <div class="v">/in/trocado<span class="arrow">↗</span></div>
+          <div class="hint">trajetória detalhada · formações · recomendações</div>
+        </a>
+        <a href="mailto:trocado@gmail.com" class="contact-row">
+          <div class="cat">// email</div>
+          <div class="v">trocado@gmail.com<span class="arrow">↗</span></div>
+          <div class="hint">canal direto · técnica · propostas · perguntas</div>
+        </a>
+        <a href="https://github.com/trocado" target="_blank" rel="noopener" class="contact-row">
+          <div class="cat">// github</div>
+          <div class="v">/trocado<span class="arrow">↗</span></div>
+          <div class="hint">código · experimentos com ia · open source</div>
+        </a>
+        <a href="https://cursos.alura.com.br/user/leandro-trocado/fullCertificate/efd6880223b23a4ba338acbad9576271" target="_blank" rel="noopener" class="contact-row">
+          <div class="cat">// certificado</div>
+          <div class="v">1.067h<span class="arrow">↗</span></div>
+          <div class="hint">declarado · público · conferível</div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="colofon">
+  <div class="wrap">
+    <div class="colofon-mark">
+      Leandro<br>
+      Trocado<span class="lime">.</span>
+    </div>
+
+    <div class="colofon-grid">
+      <div>
+        <h5>// colofon</h5>
+        <p>Field Manual v.3 · edição light brutalist · publicado em maio de 2026 a partir do Rio de Janeiro. Tipografia Space Grotesk variable + JetBrains Mono. Paleta vector: off-black, acid lime, off-white, cyan e laser orange. Sem stack proprietária — HTML/CSS puro, sem JavaScript.</p>
+      </div>
+      <div>
+        <h5>// fonte</h5>
+        <p>Próxima edição quando houver mudança relevante de direção. Versões anteriores: v.1 (clássica · descontinuada), v.2 (dark bento · /index.html), v.3 (light editorial · esta).</p>
+      </div>
+      <div>
+        <h5>// direção</h5>
+        <p>"Direction is the new asset."<br>
+          Não é slogan. É posição de trabalho.</p>
+      </div>
+    </div>
+
+    <div class="colofon-bottom">
+      <div>// trocado.com.br/v3</div>
+      <div>// this is just the beginning</div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

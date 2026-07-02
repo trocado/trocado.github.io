@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leandro Trocado — Liderança técnica executiva</title>
+<meta name="description" content="CTO, CISO, IT Manager, AI-First Advisor, Arquiteto de Soluções e AI Engineer. Liderança técnica para o próximo estágio da sua operação.">
+<meta property="og:title" content="Leandro Trocado — Liderança técnica executiva">
+<meta property="og:description" content="Liderança técnica para o próximo estágio da sua operação.">
+<link rel="icon" type="image/svg+xml" href="brand/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3EFE6;
+    --paper-2: #ECE7D8;
+    --paper-3: #E4DFCD;
+    --ink: #0E141C;
+    --ink-soft: #1F2730;
+    --ink-muted: #5A584F;
+    --ink-dim: #8E8A80;
+    --ink-line: #D5CFBF;
+    --ink-line-strong: #B5AE9B;
+    --navy: #1B2A41;
+    --navy-2: #243757;
+    --copper: #B7714F;
+    --copper-deep: #9A5C3F;
+    --sand: #D9C9A8;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --serif: 'Newsreader', Georgia, serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: var(--paper); scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    font-size: 17px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: 'cv11', 'ss01', 'ss03';
+  }
+  ::selection { background: var(--navy); color: var(--paper); }
+  a { color: inherit; text-decoration: none; }
+
+  /* Paper texture/grão */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.06 0 0 0 0 0.05 0 0 0 0 0.04 0 0 0 0.5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.5;
+    pointer-events: none;
+    z-index: 1;
+    mix-blend-mode: multiply;
+  }
+
+  .wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 32px;
+    position: relative;
+    z-index: 3;
+  }
+  .wrap-wide {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 32px;
+    position: relative;
+    z-index: 3;
+  }
+
+  /* NAV */
+  nav.top {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(243, 239, 230, 0.85);
+    backdrop-filter: blur(16px) saturate(1.5);
+    -webkit-backdrop-filter: blur(16px) saturate(1.5);
+    border-bottom: 1px solid var(--ink-line);
+  }
+  .top-inner {
+    max-width: 1280px; margin: 0 auto;
+    padding: 18px 32px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .top-brand {
+    display: flex; align-items: center; gap: 14px;
+    font-weight: 500;
+    font-size: 0.98rem;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .top-brand .mark {
+    width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .top-brand .dot { color: var(--copper); }
+  .top-links {
+    display: flex; gap: 28px;
+    font-family: var(--mono);
+    font-size: 0.76rem;
+    color: var(--ink-muted);
+    letter-spacing: 0.05em;
+  }
+  .top-links a:hover { color: var(--ink); }
+  .top-cta {
+    font-family: var(--sans);
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--paper);
+    background: var(--navy);
+    padding: 10px 20px;
+    border-radius: 6px;
+    transition: all 0.2s;
+  }
+  .top-cta:hover { background: var(--ink); }
+  @media (max-width: 800px) { .top-links { display: none; } }
+
+  /* HERO with photo atmospheric background */
+  .hero {
+    padding: 180px 0 120px;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--ink-line);
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .hero-bg img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center;
+    filter: grayscale(100%) contrast(0.95) brightness(1.05);
+    opacity: 0.18;
+    mix-blend-mode: multiply;
+  }
+  .hero-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg,
+      rgba(243, 239, 230, 0.4) 0%,
+      rgba(243, 239, 230, 0.6) 50%,
+      rgba(243, 239, 230, 0.95) 100%);
+  }
+  .hero-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 80% 30%, rgba(183, 113, 79, 0.12), transparent 60%);
+    z-index: 2;
+  }
+
+  .hero-content { position: relative; z-index: 5; }
+
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 0.76rem;
+    color: var(--ink-muted);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .hero-eyebrow .dot {
+    width: 7px; height: 7px;
+    background: var(--copper);
+    border-radius: 50%;
+  }
+  .hero-eyebrow .div { color: var(--ink-dim); }
+
+  .hero h1 {
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: clamp(2.8rem, 6.2vw, 5.4rem);
+    letter-spacing: -0.045em;
+    line-height: 1.02;
+    color: var(--ink);
+    margin-bottom: 40px;
+    max-width: 1000px;
+  }
+  .hero h1 .serif {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-style: italic;
+    color: var(--navy);
+    letter-spacing: -0.025em;
+  }
+  .hero h1 .muted { color: var(--ink-muted); }
+
+  .hero-roles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    margin: 56px 0;
+    border-top: 1px solid var(--ink-line);
+    border-bottom: 1px solid var(--ink-line);
+  }
+  .hero-roles .pos {
+    flex: 1 1 240px;
+    padding: 22px 24px 22px 0;
+    border-right: 1px solid var(--ink-line);
+    min-width: 240px;
+  }
+  .hero-roles .pos:last-child { border-right: none; padding-right: 0; }
+  .hero-roles .pos .role {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 1.05rem;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .hero-roles .pos .scope {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--ink-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  @media (max-width: 900px) {
+    .hero-roles { display: grid; grid-template-columns: 1fr 1fr; }
+    .hero-roles .pos {
+      padding: 14px 14px 14px 0;
+      border-right: 1px solid var(--ink-line);
+      border-bottom: 1px solid var(--ink-line);
+      min-width: 0;
+    }
+    .hero-roles .pos:nth-child(2n) { border-right: none; padding-right: 0; }
+    .hero-roles .pos:nth-last-child(-n+2) { border-bottom: none; }
+  }
+
+  .hero-lede {
+    font-family: var(--sans);
+    font-size: clamp(1.15rem, 1.6vw, 1.4rem);
+    font-weight: 400;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 760px;
+    margin-bottom: 48px;
+    letter-spacing: -0.005em;
+  }
+  .hero-lede strong { color: var(--ink); font-weight: 600; }
+  .hero-lede em { font-style: normal; color: var(--navy); font-weight: 500; }
+  .hero-lede .serif { font-family: var(--serif); font-style: italic; color: var(--copper); font-weight: 500; }
+
+  .hero-cta {
+    display: flex; gap: 14px; align-items: center; flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 16px 26px;
+    border-radius: 8px;
+    font-family: var(--sans);
+    font-size: 0.96rem;
+    font-weight: 500;
+    transition: all 0.2s;
+    letter-spacing: -0.005em;
+  }
+  .btn-primary {
+    background: var(--navy);
+    color: var(--paper);
+  }
+  .btn-primary:hover { background: var(--ink); transform: translateY(-1px); }
+  .btn-secondary {
+    color: var(--ink);
+    border: 1px solid var(--ink-line-strong);
+  }
+  .btn-secondary:hover { border-color: var(--navy); color: var(--navy); }
+  .btn .ar { transition: transform 0.2s; }
+  .btn:hover .ar { transform: translateX(3px); }
+
+  /* SECTION BASE */
+  section { padding: 120px 0; border-bottom: 1px solid var(--ink-line); }
+  .sec-eyebrow {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--ink-muted);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 36px;
+  }
+  .sec-eyebrow .num { color: var(--copper); margin-right: 12px; }
+  .sec-title {
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: clamp(1.9rem, 3.6vw, 3.2rem);
+    letter-spacing: -0.035em;
+    line-height: 1.08;
+    color: var(--ink);
+    margin-bottom: 32px;
+    max-width: 920px;
+  }
+  .sec-title .serif {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--navy);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+  .sec-title .copper { color: var(--copper); font-weight: 600; }
+  .sec-title .muted { color: var(--ink-muted); }
+  .sec-lede {
+    font-family: var(--sans);
+    font-size: 1.15rem;
+    line-height: 1.55;
+    color: var(--ink-muted);
+    max-width: 700px;
+    margin-bottom: 80px;
+  }
+  .sec-lede strong { color: var(--ink); font-weight: 500; }
+
+  /* POSITIONING — text + portrait abstract */
+  .positioning {
+    display: grid;
+    grid-template-columns: 1.4fr 0.8fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .positioning-body {
+    font-family: var(--sans);
+    font-size: 1.2rem;
+    line-height: 1.68;
+    color: var(--ink);
+    font-weight: 400;
+    letter-spacing: -0.005em;
+  }
+  .positioning-body p { margin-bottom: 28px; }
+  .positioning-body p:last-child { margin-bottom: 0; }
+  .positioning-body strong { color: var(--ink); font-weight: 600; }
+  .positioning-body em {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 500;
+    color: var(--navy);
+  }
+  .positioning-body .copper { color: var(--copper); font-weight: 500; }
+  .positioning-body .muted { color: var(--ink-muted); }
+
+  .portrait-card {
+    position: sticky;
+    top: 100px;
+    background: var(--paper-2);
+    border: 1px solid var(--ink-line);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .portrait-svg {
+    aspect-ratio: 4/5;
+    width: 100%;
+    background: linear-gradient(160deg, var(--paper-3) 0%, var(--paper-2) 50%, var(--sand) 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .portrait-svg svg {
+    width: 100%; height: 100%;
+    display: block;
+  }
+  .portrait-info {
+    padding: 24px 28px;
+    border-top: 1px solid var(--ink-line);
+    background: var(--paper);
+  }
+  .portrait-info .name {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+  .portrait-info .role {
+    font-family: var(--mono);
+    font-size: 0.74rem;
+    color: var(--ink-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .portrait-info .stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding-top: 16px;
+    border-top: 1px solid var(--ink-line);
+  }
+  .portrait-info .stats div {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--ink-muted);
+    letter-spacing: 0.05em;
+  }
+  .portrait-info .stats div strong {
+    display: block;
+    font-family: var(--sans);
+    font-weight: 600;
+    color: var(--ink);
+    font-size: 1rem;
+    letter-spacing: -0.01em;
+    margin-bottom: 2px;
+  }
+  @media (max-width: 900px) {
+    .positioning { grid-template-columns: 1fr; gap: 48px; }
+    .portrait-card { position: static; max-width: 380px; }
+  }
+
+  /* DOMAIN CARDS — 6 areas */
+  .domains {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .domain {
+    background: var(--paper);
+    border: 1px solid var(--ink-line);
+    border-radius: 12px;
+    padding: 32px 28px;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .domain:hover {
+    border-color: var(--ink-line-strong);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(14, 20, 28, 0.06);
+  }
+  .domain::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+    background: var(--accent, var(--navy));
+    opacity: 0.85;
+  }
+  .domain .icon {
+    width: 44px; height: 44px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent, var(--navy));
+  }
+  .domain .icon svg { width: 100%; height: 100%; }
+  .domain .id {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--ink-muted);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .domain h3 {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 1.35rem;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    margin-bottom: 12px;
+    line-height: 1.15;
+  }
+  .domain .desc {
+    font-family: var(--sans);
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: var(--ink-muted);
+    margin-bottom: 24px;
+    flex-grow: 1;
+  }
+  .domain .delivers {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid var(--ink-line);
+  }
+  .domain .delivers .lab {
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    color: var(--ink-dim);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .domain .delivers ul { list-style: none; }
+  .domain .delivers li {
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    padding: 4px 0;
+    line-height: 1.45;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .domain .delivers li::before {
+    content: '—';
+    color: var(--accent, var(--navy));
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 1000px) {
+    .domains { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 600px) {
+    .domains { grid-template-columns: 1fr; }
+  }
+
+  /* QUOTE BLOCK */
+  .quote-block {
+    padding: 64px 0;
+    margin: 72px 0 0;
+    border-top: 1px solid var(--ink-line);
+  }
+  .quote-block blockquote {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-style: italic;
+    font-size: clamp(1.7rem, 3.4vw, 2.8rem);
+    letter-spacing: -0.02em;
+    line-height: 1.18;
+    color: var(--ink);
+    max-width: 900px;
+  }
+  .quote-block blockquote::before {
+    content: '"';
+    font-family: var(--serif);
+    color: var(--copper);
+    font-size: 1.2em;
+    margin-right: 8px;
+  }
+  .quote-block .attrib {
+    margin-top: 24px;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--ink-muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* TRACK */
+  .track {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+  }
+  .track .item {
+    padding: 40px 28px;
+    border-right: 1px solid var(--ink-line);
+    background: var(--paper);
+  }
+  .track .item:last-child { border-right: none; }
+  .track .item .v {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: clamp(2.6rem, 4.5vw, 3.8rem);
+    letter-spacing: -0.05em;
+    line-height: 1;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+  .track .item .v .unit {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--ink-muted);
+    font-weight: 400;
+    font-size: 0.48em;
+    margin-left: 4px;
+  }
+  .track .item .k {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--ink-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    line-height: 1.5;
+  }
+  .track .item .k strong { color: var(--ink); }
+  @media (max-width: 800px) {
+    .track { grid-template-columns: 1fr 1fr; }
+    .track .item { border-right: 1px solid var(--ink-line); border-bottom: 1px solid var(--ink-line); }
+    .track .item:nth-child(2n) { border-right: none; }
+    .track .item:nth-last-child(-n+2) { border-bottom: none; }
+  }
+
+  /* MODELS */
+  .models {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--ink-line);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--paper-2);
+  }
+  .model {
+    padding: 36px 32px;
+    border-right: 1px solid var(--ink-line);
+    border-bottom: 1px solid var(--ink-line);
+    background: var(--paper);
+  }
+  .model:nth-child(2n) { border-right: none; }
+  .model:nth-last-child(-n+2) { border-bottom: none; }
+  .model .tag {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--copper);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .model h4 {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 1.25rem;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
+  .model p {
+    font-family: var(--sans);
+    font-size: 0.96rem;
+    line-height: 1.55;
+    color: var(--ink-muted);
+  }
+  @media (max-width: 700px) {
+    .models { grid-template-columns: 1fr; }
+    .model { border-right: none; }
+    .model:nth-child(odd) { border-right: none; }
+  }
+
+  /* CONTACT */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 0;
+    border: 1px solid var(--ink-line);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--paper);
+  }
+  .contact-primary {
+    padding: 48px 40px;
+    background: var(--paper-2);
+    border-right: 1px solid var(--ink-line);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+  .contact-primary::before {
+    content: '';
+    position: absolute;
+    top: 0; right: -100px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(183, 113, 79, 0.15), transparent 70%);
+    pointer-events: none;
+  }
+  .contact-primary .lab {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--copper);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 22px;
+    position: relative;
+  }
+  .contact-primary h3 {
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: clamp(1.6rem, 2.6vw, 2.4rem);
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    color: var(--ink);
+    margin-bottom: 14px;
+    max-width: 480px;
+    position: relative;
+  }
+  .contact-primary h3 .serif {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--navy);
+  }
+  .contact-primary .desc {
+    font-family: var(--sans);
+    font-size: 1.05rem;
+    color: var(--ink-muted);
+    line-height: 1.55;
+    margin-bottom: 32px;
+    max-width: 440px;
+    position: relative;
+  }
+  .wa-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 28px;
+    background: var(--navy);
+    color: var(--paper);
+    border-radius: 8px;
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.2s;
+    align-self: flex-start;
+    position: relative;
+  }
+  .wa-btn:hover { background: var(--ink); transform: translateY(-1px); }
+  .wa-btn .ar { transition: transform 0.2s; }
+  .wa-btn:hover .ar { transform: translateX(3px); }
+  .contact-primary .phone {
+    margin-top: 16px;
+    font-family: var(--mono);
+    font-size: 0.86rem;
+    color: var(--ink-muted);
+    position: relative;
+  }
+  .contact-primary .phone strong { color: var(--ink); }
+
+  .contact-side {
+    display: flex;
+    flex-direction: column;
+  }
+  .contact-side a {
+    padding: 28px 32px;
+    border-bottom: 1px solid var(--ink-line);
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: center;
+  }
+  .contact-side a:last-child { border-bottom: none; }
+  .contact-side a:hover { background: var(--paper-2); }
+  .contact-side a .lab {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--ink-muted);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .contact-side a .v {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 1.18rem;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .contact-side a:hover .v { color: var(--navy); }
+  .contact-side a .v .ar {
+    margin-left: 6px;
+    color: var(--ink-muted);
+    transition: transform 0.2s;
+    display: inline-block;
+  }
+  .contact-side a:hover .v .ar { color: var(--copper); transform: translate(3px, -3px); }
+  @media (max-width: 800px) {
+    .contact-grid { grid-template-columns: 1fr; }
+    .contact-primary { border-right: none; border-bottom: 1px solid var(--ink-line); }
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 96px 0 40px;
+    border-top: 1px solid var(--ink-line);
+    background: var(--paper-2);
+  }
+  .foot-mark {
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: clamp(2.4rem, 6vw, 4.8rem);
+    letter-spacing: -0.045em;
+    line-height: 1.05;
+    color: var(--ink);
+    margin-bottom: 56px;
+    max-width: 920px;
+  }
+  .foot-mark .serif {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--navy);
+    font-weight: 500;
+  }
+  .foot-mark .muted { color: var(--ink-muted); }
+  .foot-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 32px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--ink-line);
+    margin-bottom: 32px;
+  }
+  .foot-grid h5 {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--copper);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .foot-grid p, .foot-grid ul {
+    font-family: var(--sans);
+    font-size: 0.92rem;
+    color: var(--ink-muted);
+    line-height: 1.7;
+  }
+  .foot-grid a { color: var(--ink); }
+  .foot-grid a:hover { color: var(--copper); }
+  .foot-grid ul { list-style: none; }
+  .foot-bottom {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--ink-dim);
+    letter-spacing: 0.1em;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  @media (max-width: 800px) {
+    .foot-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="top-inner">
+    <a href="#" class="top-brand">
+      <span class="mark">
+        <svg viewBox="0 0 180 160" style="width: 100%; color: var(--navy);">
+          <path d="M 20 30 L 80 80 L 20 130" fill="none" stroke="currentColor" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" opacity="0.35"/>
+          <path d="M 70 30 L 130 80 L 70 130" fill="none" stroke="currentColor" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="130" cy="80" r="11" fill="var(--copper)"/>
+        </svg>
+      </span>
+      Leandro Trocado<span class="dot">.</span>
+    </a>
+    <div class="top-links">
+      <a href="#positioning">Posicionamento</a>
+      <a href="#domains">Áreas</a>
+      <a href="#record">Trajetória</a>
+      <a href="#engagement">Engajamento</a>
+    </div>
+    <a href="#contact" class="top-cta">Conversar</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-bg">
+    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=2400&q=80" alt="">
+  </div>
+
+  <div class="wrap hero-content">
+    <div class="hero-eyebrow">
+      <span class="dot"></span>
+      Aberto a posições executivas e advisory
+      <span class="div">·</span>
+      Brasil & remoto
+    </div>
+
+    <h1>
+      Liderança técnica para o <span class="serif">próximo estágio</span> da sua operação.
+    </h1>
+
+    <div class="hero-roles">
+      <div class="pos">
+        <div class="role">CTO</div>
+        <div class="scope">tecnologia · ponta a ponta</div>
+      </div>
+      <div class="pos">
+        <div class="role">CISO</div>
+        <div class="scope">segurança da informação</div>
+      </div>
+      <div class="pos">
+        <div class="role">IT Manager</div>
+        <div class="scope">gestão executiva</div>
+      </div>
+      <div class="pos">
+        <div class="role">AI-First Advisor</div>
+        <div class="scope">cultura · transformação</div>
+      </div>
+    </div>
+
+    <p class="hero-lede">
+      Vinte anos em tecnologia, segurança e governança — <strong>arquitetando soluções</strong> e <strong>engenheirando IA</strong> na mesma cabeça executiva. Traduzo complexidade em decisão executável, instalo cultura AI-First sem pirotecnia, e construo operações que crescem <em>sem perder coerência</em>. <span class="serif">Direção é o novo recurso.</span>
+    </p>
+
+    <div class="hero-cta">
+      <a href="https://wa.me/5521997510054?text=Ol%C3%A1%20Leandro%2C%20gostaria%20de%20conversar%20sobre%20uma%20oportunidade%20de%20lideran%C3%A7a%20t%C3%A9cnica." target="_blank" rel="noopener" class="btn btn-primary">
+        Conversar sobre uma oportunidade <span class="ar">→</span>
+      </a>
+      <a href="#positioning" class="btn btn-secondary">
+        Entender o posicionamento
+      </a>
+    </div>
+  </div>
+</header>
+
+<section id="positioning">
+  <div class="wrap">
+    <div class="sec-eyebrow"><span class="num">01</span>POSICIONAMENTO</div>
+    <h2 class="sec-title">
+      Operador <span class="serif">no ponto</span> em que tecnologia, segurança, governança e IA se encontram.
+    </h2>
+
+    <div class="positioning">
+      <div class="positioning-body">
+        <p>Comecei em código. Atravessei análise de sistemas e arquitetura. Cheguei na liderança executiva. Mas continuo escrevendo software, modelando solução e prototipando com IA — porque <strong>direção sem mão na massa vira ficção executiva</strong>.</p>
+
+        <p>Atuo simultaneamente como executivo de tecnologia, líder de segurança, gestor de TI, advisor de cultura AI-First, <em>arquiteto de soluções</em> e <em>AI engineer</em>. Não são funções separadas — são lentes de uma mesma prática. A operação moderna exige que essas dimensões coexistam na mesma cabeça, com a mesma lógica de decisão.</p>
+
+        <p>Trato regulação como restrição de design, não obstáculo. Segurança como função estratégica, não overhead. IA como cultura instalada, não ferramenta plugada. Arquitetura como hipótese contínua, não diagrama de PowerPoint. <span class="muted">Tudo isso só funciona junto.</span></p>
+
+        <p>Estou aberto a engajamentos onde direção técnica de verdade muda o estágio da empresa — em modelo executivo full-time, fração de tempo, advisory ou interim leadership.</p>
+      </div>
+
+      <aside class="portrait-card">
+        <div class="portrait-svg">
+          <!-- SVG abstract portrait composition -->
+          <svg viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <linearGradient id="ink-grad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#1B2A41"/>
+                <stop offset="100%" stop-color="#243757"/>
+              </linearGradient>
+              <linearGradient id="copper-grad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#B7714F"/>
+                <stop offset="100%" stop-color="#9A5C3F"/>
+              </linearGradient>
+              <filter id="blur-soft">
+                <feGaussianBlur stdDeviation="1.5"/>
+              </filter>
+            </defs>
+            <!-- Geometric grid lines (architecture) -->
+            <g stroke="#B5AE9B" stroke-width="0.5" opacity="0.4">
+              <line x1="0" y1="100" x2="400" y2="100"/>
+              <line x1="0" y1="200" x2="400" y2="200"/>
+              <line x1="0" y1="300" x2="400" y2="300"/>
+              <line x1="0" y1="400" x2="400" y2="400"/>
+              <line x1="100" y1="0" x2="100" y2="500"/>
+              <line x1="200" y1="0" x2="200" y2="500"/>
+              <line x1="300" y1="0" x2="300" y2="500"/>
+            </g>
+
+            <!-- Abstract face/head composition -->
+            <!-- Soft circular form (head) -->
+            <circle cx="210" cy="200" r="135" fill="url(#ink-grad)" opacity="0.95"/>
+
+            <!-- Body silhouette / shoulders -->
+            <path d="M 60 500 L 60 420 Q 60 360 130 340 L 290 340 Q 360 360 360 420 L 360 500 Z" fill="url(#ink-grad)" opacity="0.9"/>
+
+            <!-- Negative space / face profile suggestion -->
+            <path d="M 230 130 Q 250 130 260 145 L 265 195 Q 268 220 255 235 L 250 245 Q 260 255 255 270 L 215 280 Q 195 280 190 265 L 195 240 Q 165 220 165 185 Q 165 145 200 135 Z" fill="#243757" opacity="0.5"/>
+
+            <!-- Copper accent — the "dot" / signature -->
+            <circle cx="320" cy="120" r="14" fill="url(#copper-grad)"/>
+            <circle cx="320" cy="120" r="22" fill="none" stroke="#B7714F" stroke-width="0.5" opacity="0.5"/>
+
+            <!-- Vector mark / chevron pattern repeating -->
+            <g transform="translate(40, 60)" stroke="#B7714F" stroke-width="2" fill="none" opacity="0.6" stroke-linecap="round">
+              <path d="M 0 0 L 12 12 L 0 24"/>
+              <path d="M 14 0 L 26 12 L 14 24"/>
+            </g>
+
+            <!-- Bottom labels / technical -->
+            <text x="40" y="475" font-family="JetBrains Mono, monospace" font-size="9" fill="#D5CFBF" letter-spacing="3" font-weight="500">// COMPOSITION.LT</text>
+            <text x="280" y="475" font-family="JetBrains Mono, monospace" font-size="9" fill="#D5CFBF" letter-spacing="2" text-anchor="start">2026 · RJ</text>
+
+            <!-- Cross-hair / arquitetural marker -->
+            <g stroke="#B7714F" stroke-width="1" opacity="0.55">
+              <line x1="320" y1="100" x2="320" y2="115"/>
+              <line x1="320" y1="125" x2="320" y2="140"/>
+              <line x1="300" y1="120" x2="315" y2="120"/>
+              <line x1="325" y1="120" x2="340" y2="120"/>
+            </g>
+          </svg>
+        </div>
+        <div class="portrait-info">
+          <div class="name">Leandro Trocado</div>
+          <div class="role">// CTO · CISO · IT MGR · AI-FIRST</div>
+          <div class="stats">
+            <div><strong>20+ anos</strong>em tecnologia</div>
+            <div><strong>RJ · BR</strong>base · remoto</div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section id="domains">
+  <div class="wrap-wide">
+    <div class="sec-eyebrow"><span class="num">02</span>ÁREAS DE ATUAÇÃO</div>
+    <h2 class="sec-title">
+      Seis competências executivas que <span class="serif">coexistem</span> — em proporção variável.
+    </h2>
+    <p class="sec-lede">Cada área tem o seu peso, contexto e entrega. Em geral elas operam juntas, mas listadas isoladamente para que o escopo de cada uma fique explícito.</p>
+
+    <div class="domains">
+
+      <div class="domain" style="--accent: var(--navy);">
+        <div class="icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M24 4 L42 14 L42 34 L24 44 L6 34 L6 14 Z"/>
+            <path d="M24 4 L24 44 M6 14 L42 34 M6 34 L42 14"/>
+          </svg>
+        </div>
+        <div class="id">/ 01 · CTO</div>
+        <h3>Tecnologia, ponta a ponta.</h3>
+        <p class="desc">Direção técnica end-to-end: arquitetura, stack, build vs. buy, modernização de legado, e a costura entre roadmap de produto e capacidade de engenharia.</p>
+        <div class="delivers">
+          <div class="lab">// entrega</div>
+          <ul>
+            <li>Arquitetura coerente, escolhas defensáveis</li>
+            <li>Roadmap técnico plurianual (PDTI · PETI)</li>
+            <li>Modelo de engenharia que escala</li>
+            <li>Stack moderna, dívida sob controle</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="domain" style="--accent: var(--navy);">
+        <div class="icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M24 4 L40 10 L40 22 Q40 36 24 44 Q8 36 8 22 L8 10 Z"/>
+            <path d="M17 24 L22 29 L31 19"/>
+          </svg>
+        </div>
+        <div class="id">/ 02 · CISO</div>
+        <h3>Segurança como função estratégica.</h3>
+        <p class="desc">SegInfo tratada como pilar de operação — não como auditoria de fim de ano. Política, controles, resposta a incidentes e comunicação executiva de risco.</p>
+        <div class="delivers">
+          <div class="lab">// entrega</div>
+          <ul>
+            <li>Programa de segurança operacional</li>
+            <li>Gestão de risco em linguagem de board</li>
+            <li>Resposta a incidentes preparada</li>
+            <li>Conformidade que não trava negócio</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="domain" style="--accent: var(--navy);">
+        <div class="icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="6" y="6" width="16" height="16" rx="2"/>
+            <rect x="26" y="6" width="16" height="16" rx="2"/>
+            <rect x="6" y="26" width="16" height="16" rx="2"/>
+            <rect x="26" y="26" width="16" height="16" rx="2"/>
+          </svg>
+        </div>
+        <div class="id">/ 03 · IT MANAGER</div>
+        <h3>Gestão técnica que executa.</h3>
+        <p class="desc">Operação de TI no chão: equipe, KPIs, comitês, sustentação, capacidade, ritos. A camada onde estratégia vira cadência semanal e métrica móvel.</p>
+        <div class="delivers">
+          <div class="lab">// entrega</div>
+          <ul>
+            <li>Time técnico de alta performance</li>
+            <li>Governança que destrava</li>
+            <li>KPIs que mudam decisão</li>
+            <li>Sustentação de ambientes escaláveis</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="domain" style="--accent: var(--copper);">
+        <div class="icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M24 4 L28 18 L42 22 L28 26 L24 40 L20 26 L6 22 L20 18 Z"/>
+            <circle cx="36" cy="10" r="2" fill="currentColor"/>
+            <circle cx="10" cy="36" r="1.5" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="id">/ 04 · AI-FIRST</div>
+        <h3>Cultura — não projeto.</h3>
+        <p class="desc">Transformação para que IA seja vantagem composta, não Copilot ligado. Skills, agentes, MCPs, workflows, change management e ritmo de adoção.</p>
+        <div class="delivers">
+          <div class="lab">// entrega</div>
+          <ul>
+            <li>Cultura AI-First instalada</li>
+            <li>Skills e agentes em produção</li>
+            <li>Workflows críticos automatizados</li>
+            <li>Adoção mensurável, não cosmética</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="domain" style="--accent: var(--copper);">
+        <div class="icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="6" y="6" width="36" height="36" rx="2"/>
+            <path d="M6 16 L42 16 M16 6 L16 42 M28 16 L28 30 L42 30"/>
+            <circle cx="28" cy="30" r="2.5" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="id">/ 05 · ARQUITETURA DE SOLUÇÕES</div>
+        <h3>Solução desenhada para o contexto real.</h3>
+        <p class="desc">Modelagem técnica que conecta negócio, integração, dado e segurança em uma só hipótese executável. Decisões defensáveis com critério explícito.</p>
+        <div class="delivers">
+          <div class="lab">// entrega</div>
+          <ul>
+            <li>Arquitetura de referência por domínio</li>
+            <li>ADRs e critérios de decisão registrados</li>
+            <li>Integrações que sustentam escala</li>
+            <li>Trade-offs explícitos, não escondidos</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="domain" style="--accent: var(--copper);">
+        <div class="icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4"/>
+            <circle cx="36" cy="12" r="4"/>
+            <circle cx="24" cy="24" r="5"/>
+            <circle cx="12" cy="36" r="4"/>
+            <circle cx="36" cy="36" r="4"/>
+            <path d="M14 14 L21 21 M34 14 L27 21 M14 34 L21 27 M34 34 L27 27"/>
+          </svg>
+        </div>
+        <div class="id">/ 06 · AI ENGINEERING</div>
+        <h3>IA como infraestrutura — não demo.</h3>
+        <p class="desc">Construção de agentes especializados, integrações com LLMs, pipelines de prompt, MCPs e workflows de IA em produção. RAG, evals, observabilidade, custo.</p>
+        <div class="delivers">
+          <div class="lab">// entrega</div>
+          <ul>
+            <li>Agentes em produção, não em slide</li>
+            <li>Pipelines RAG com observabilidade</li>
+            <li>Evals e controle de qualidade</li>
+            <li>Custo e latência sob gestão</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="quote-block">
+      <blockquote>
+        Seis competências, uma só prática. <em>Direção técnica não se divide por departamento</em> — se compõe na mesma cabeça executiva.
+      </blockquote>
+      <div class="attrib">// posicionamento de prática</div>
+    </div>
+  </div>
+</section>
+
+<section id="record">
+  <div class="wrap">
+    <div class="sec-eyebrow"><span class="num">03</span>TRAJETÓRIA</div>
+    <h2 class="sec-title">
+      Marcadores <span class="serif">objetivos</span> de uma prática contínua.
+    </h2>
+    <p class="sec-lede">Trajetória detalhada vive no LinkedIn. Aqui ficam os pontos que sustentam o posicionamento — sem inflar.</p>
+
+    <div class="track">
+      <div class="item">
+        <div class="v">20<span class="unit">+ anos</span></div>
+        <div class="k"><strong>Tecnologia contínua</strong><br>Da web ao executive layer</div>
+      </div>
+      <div class="item">
+        <div class="v">6<span class="unit"> áreas</span></div>
+        <div class="k"><strong>Competências executivas</strong><br>Atuando em composição</div>
+      </div>
+      <div class="item">
+        <div class="v">8<span class="unit">+ frameworks</span></div>
+        <div class="k"><strong>Decisórios em uso</strong><br>SCQA · OODA · GROW · PCRS · PREP · +3</div>
+      </div>
+      <div class="item">
+        <div class="v">4<span class="unit"> modalidades</span></div>
+        <div class="k"><strong>Modelos de engajamento</strong><br>Full-time · Fractional · Advisory · Interim</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="engagement">
+  <div class="wrap">
+    <div class="sec-eyebrow"><span class="num">04</span>MODELOS DE ENGAJAMENTO</div>
+    <h2 class="sec-title">
+      Quatro formatos. <span class="muted">Um critério: direção técnica que muda o estágio da operação.</span>
+    </h2>
+    <p class="sec-lede">Cada modelo abaixo tem propósito, escopo e ritmo definidos antes do start. Sem escopo difuso.</p>
+
+    <div class="models">
+      <div class="model">
+        <div class="tag">/ Full-time executive</div>
+        <h4>CTO ou CISO em tempo integral</h4>
+        <p>Para empresas em ponto de inflexão estrutural — fusão, expansão, modernização profunda ou virada AI-First. Engajamento integral, com mandato executivo claro.</p>
+      </div>
+      <div class="model">
+        <div class="tag">/ Fractional leadership</div>
+        <h4>Fração de tempo, autoridade total</h4>
+        <p>Para operações que precisam de liderança técnica sênior mas ainda não comportam C-level full-time. 2 a 3 dias por semana, com a mesma autoridade decisória.</p>
+      </div>
+      <div class="model">
+        <div class="tag">/ Advisory</div>
+        <h4>Consultivo estratégico</h4>
+        <p>Para CEOs, CTOs e boards que querem segunda opinião qualificada em decisões grandes. Cadência mensal ou trimestral, com pauta declarada e entregáveis claros.</p>
+      </div>
+      <div class="model">
+        <div class="tag">/ Interim leadership</div>
+        <h4>Liderança técnica temporária</h4>
+        <p>Para transições, saídas de C-level ou janelas críticas. Entro com mandato definido, prazo determinado e plano de sucessão estruturado desde o início.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="sec-eyebrow"><span class="num">05</span>CONVERSAR</div>
+    <h2 class="sec-title">
+      Comece pela <span class="serif">conversa</span>. O resto se desenha junto.
+    </h2>
+    <p class="sec-lede">Texto curto sobre o estágio da operação, o contexto da decisão e o prazo aproximado. Respondo se faz sentido para os dois lados.</p>
+
+    <div class="contact-grid">
+      <div class="contact-primary">
+        <div>
+          <div class="lab">/ WHATSAPP · CANAL PREFERIDO</div>
+          <h3>Conversa <span class="serif">direta</span>, sem intermediário ou formulário.</h3>
+          <p class="desc">A forma mais rápida de iniciar o contato. Resposta usual em 24 horas úteis.</p>
+        </div>
+        <div>
+          <a href="https://wa.me/5521997510054?text=Ol%C3%A1%20Leandro%2C%20gostaria%20de%20conversar%20sobre%20uma%20oportunidade%20de%20lideran%C3%A7a%20t%C3%A9cnica." target="_blank" rel="noopener" class="wa-btn">
+            Iniciar conversa <span class="ar">→</span>
+          </a>
+          <div class="phone">Número direto · <strong>+55 21 99751-0054</strong></div>
+        </div>
+      </div>
+
+      <div class="contact-side">
+        <a href="https://www.linkedin.com/in/trocado/" target="_blank" rel="noopener">
+          <div class="lab">/ LinkedIn</div>
+          <div class="v">/in/trocado<span class="ar">↗</span></div>
+        </a>
+        <a href="mailto:trocado@gmail.com?subject=Oportunidade%20de%20lideran%C3%A7a%20t%C3%A9cnica&body=Ol%C3%A1%20Leandro%2C%0A%0AGostaria%20de%20conversar%20sobre%3A%0A">
+          <div class="lab">/ Email</div>
+          <div class="v">trocado@gmail.com<span class="ar">↗</span></div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-mark">
+      Direção é o <span class="serif">novo recurso.</span><br>
+      <span class="muted">E começa com uma conversa.</span>
+    </div>
+
+    <div class="foot-grid">
+      <div>
+        <h5>/ Sobre</h5>
+        <p>Leandro Trocado — líder técnico com 20+ anos de prática em tecnologia, segurança da informação, governança de TI, arquitetura de soluções, AI engineering e cultura AI-First. Base no Rio de Janeiro · disponível para engajamentos full-time, fração de tempo, advisory ou interim em modelos remoto, híbrido ou presencial.</p>
+      </div>
+      <div>
+        <h5>/ Canais</h5>
+        <ul>
+          <li><a href="https://wa.me/5521997510054" target="_blank">WhatsApp</a></li>
+          <li><a href="mailto:trocado@gmail.com">Email</a></li>
+          <li><a href="https://www.linkedin.com/in/trocado/" target="_blank">LinkedIn</a></li>
+          <li><a href="https://github.com/trocado" target="_blank">GitHub</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>/ Edições anteriores</h5>
+        <ul>
+          <li><a href="index.html">v.2 — Dark bento</a></li>
+          <li><a href="v3.html">v.3 — Light editorial</a></li>
+          <li><a href="v4.html">v.4 — Ops terminal</a></li>
+          <li><a href="v5.html">v.5 — Executive dark</a></li>
+          <li><strong style="color: var(--copper);">v.6 — Executive light (esta)</strong></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <div>trocado.com.br · v.6 · executive light edition · 2026</div>
+      <div>Engagement is open · LinkedIn · WhatsApp · Email</div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

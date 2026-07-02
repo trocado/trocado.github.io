@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>trocado. · vector identity</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0A0A0A;
+    --bg-elev: #131316;
+    --bg-card: #18181C;
+    --border: #2A2A30;
+    --border-hot: #3F3F46;
+    --fg: #FAFAFA;
+    --fg-muted: #7C7C7C;
+    --fg-dim: #4A4A52;
+    --lime: #D4FF00;
+    --lime-deep: #A3E635;
+    --cyan: #06B6D4;
+    --cyan-soft: #67E8F9;
+    --orange: #FB923C;
+    --pink: #EC4899;
+    --sans: 'Space Grotesk', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: var(--bg); }
+  body {
+    font-family: var(--sans);
+    color: var(--fg);
+    background: var(--bg);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  ::selection { background: var(--lime); color: var(--bg); }
+
+  /* Noise texture global */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.4 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: 1;
+    mix-blend-mode: overlay;
+  }
+
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 2; }
+  .mono { font-family: var(--mono); }
+  .label {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--lime);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+  }
+  .label-muted { color: var(--fg-muted); }
+  .label-cyan { color: var(--cyan-soft); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    padding: 80px 0;
+  }
+  .mesh {
+    position: absolute;
+    inset: -10%;
+    background:
+      radial-gradient(circle at 18% 30%, rgba(6, 182, 212, 0.55) 0%, transparent 45%),
+      radial-gradient(circle at 82% 70%, rgba(251, 146, 60, 0.40) 0%, transparent 50%),
+      radial-gradient(circle at 60% 15%, rgba(212, 255, 0, 0.30) 0%, transparent 40%),
+      radial-gradient(circle at 35% 90%, rgba(236, 72, 153, 0.25) 0%, transparent 45%);
+    filter: blur(80px);
+    pointer-events: none;
+    animation: float 18s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    33% { transform: translate(-3%, 4%) rotate(2deg); }
+    66% { transform: translate(2%, -3%) rotate(-1deg); }
+  }
+  .grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+    background-size: 80px 80px;
+    pointer-events: none;
+    mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
+  }
+  .hero-content { position: relative; z-index: 3; max-width: 1280px; margin: 0 auto; padding: 0 32px; width: 100%; }
+  .hero-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 80px;
+    align-items: center;
+  }
+  .hero-mark { width: 120px; }
+  .hero h1 {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: clamp(3.5rem, 11vw, 9rem);
+    letter-spacing: -0.05em;
+    line-height: 0.95;
+    margin-bottom: 32px;
+  }
+  .hero h1 .accent { color: var(--lime); }
+  .hero h1 .strike { color: var(--fg-muted); text-decoration: line-through; text-decoration-color: var(--cyan); }
+  .hero-tagline {
+    font-size: clamp(1.2rem, 2.2vw, 1.8rem);
+    color: var(--fg-muted);
+    max-width: 620px;
+    margin-bottom: 48px;
+    line-height: 1.4;
+  }
+  .hero-tagline em { color: var(--lime); font-style: normal; }
+  .hero-coord {
+    position: absolute;
+    bottom: 40px;
+    right: 32px;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--fg-dim);
+    letter-spacing: 0.15em;
+    z-index: 3;
+  }
+  .hero-scroll {
+    position: absolute;
+    bottom: 40px;
+    left: 32px;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--fg-muted);
+    letter-spacing: 0.2em;
+    z-index: 3;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .hero-scroll .arrow { color: var(--lime); }
+
+  /* SECTIONS */
+  section { padding: 120px 0; position: relative; z-index: 2; border-top: 1px solid var(--border); }
+  .section-head { margin-bottom: 64px; display: flex; justify-content: space-between; align-items: flex-end; gap: 32px; flex-wrap: wrap; }
+  .section-head h2 {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    max-width: 720px;
+  }
+  .section-head h2 .accent { color: var(--lime); }
+  .section-head h2 .cyan { color: var(--cyan-soft); }
+  .section-num {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--lime);
+    letter-spacing: 0.2em;
+    margin-bottom: 16px;
+  }
+  .lede { color: var(--fg-muted); max-width: 380px; font-size: 0.95rem; }
+
+  /* BENTO */
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 16px;
+  }
+  .tile {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  .tile:hover { border-color: var(--border-hot); transform: translateY(-2px); }
+  .tile-mono { color: var(--fg-muted); }
+  .tile h3 {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 1.4rem;
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+  }
+  .tile p { color: var(--fg-muted); font-size: 0.92rem; }
+  .tile .label { margin-bottom: 16px; display: block; }
+
+  .span-2 { grid-column: span 2; }
+  .span-3 { grid-column: span 3; }
+  .span-4 { grid-column: span 4; }
+  .span-6 { grid-column: span 6; }
+  .row-2 { grid-row: span 2; }
+
+  /* Concept tile big */
+  .concept-tile {
+    background: linear-gradient(135deg, rgba(6, 182, 212, 0.12) 0%, rgba(212, 255, 0, 0.05) 100%);
+    border-color: rgba(6, 182, 212, 0.3);
+  }
+  .concept-tile h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin-bottom: 24px;
+  }
+  .concept-tile h2 .lime { color: var(--lime); }
+  .concept-tile h2 .cyan { color: var(--cyan-soft); }
+  .concept-tile h2 .orange { color: var(--orange); }
+  .concept-decode {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 16px 24px;
+    margin-top: 32px;
+  }
+  .concept-decode dt {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--lime);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    padding-top: 2px;
+    white-space: nowrap;
+  }
+  .concept-decode dd { color: var(--fg); font-size: 0.95rem; line-height: 1.6; }
+
+  /* Mark showcase */
+  .mark-display {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px;
+    position: relative;
+  }
+  .mark-display img { max-width: 100%; max-height: 100%; }
+  .mark-display.dark { background: var(--bg); border: 1px solid var(--border); border-radius: 16px; }
+  .mark-display.light { background: var(--fg); border-radius: 16px; }
+  .mark-display.lime { background: var(--lime); border-radius: 16px; color: var(--bg); }
+  .mark-display .label-pos {
+    position: absolute;
+    top: 16px;
+    left: 20px;
+  }
+
+  /* PALETTE */
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  .swatch {
+    aspect-ratio: 3 / 4;
+    border-radius: 14px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+  .swatch:hover { transform: scale(1.02); }
+  .swatch::after {
+    content: '';
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 12px currentColor;
+  }
+  .swatch-name { font-family: var(--sans); font-weight: 600; font-size: 1rem; }
+  .swatch-meta { font-family: var(--mono); font-size: 0.7rem; opacity: 0.7; letter-spacing: 0.1em; }
+  .swatch-desc { font-family: var(--mono); font-size: 0.65rem; opacity: 0.5; text-transform: uppercase; letter-spacing: 0.15em; margin-top: 4px; }
+  .sw-bg { background: #0A0A0A; color: var(--lime); }
+  .sw-lime { background: var(--lime); color: #0A0A0A; }
+  .sw-cyan { background: var(--cyan); color: var(--fg); }
+  .sw-orange { background: var(--orange); color: #0A0A0A; }
+  .sw-fg { background: var(--fg); color: #0A0A0A; }
+
+  /* TYPOGRAPHY */
+  .type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .type-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 40px;
+  }
+  .type-card.full { grid-column: span 2; }
+  .type-card .label { margin-bottom: 20px; display: block; }
+  .display-sample {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    letter-spacing: -0.04em;
+    line-height: 1;
+    color: var(--fg);
+  }
+  .display-sample .lime { color: var(--lime); }
+  .display-sample .light { font-weight: 300; color: var(--fg-muted); }
+  .body-sample { font-size: 1.05rem; color: var(--fg-muted); max-width: 60ch; }
+  .mono-sample {
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    color: var(--lime);
+    background: rgba(212, 255, 0, 0.04);
+    padding: 16px;
+    border-radius: 8px;
+    border: 1px solid rgba(212, 255, 0, 0.15);
+    margin-top: 16px;
+    line-height: 1.6;
+  }
+  .mono-sample .comment { color: var(--fg-dim); }
+  .mono-sample .kw { color: var(--cyan-soft); }
+
+  /* APPS */
+  .apps { display: grid; gap: 16px; grid-template-columns: repeat(6, 1fr); }
+  .app {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+  .app:hover { border-color: var(--border-hot); }
+  .app-head {
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .app-title { font-family: var(--sans); font-weight: 600; font-size: 0.95rem; }
+  .app-body {
+    padding: 32px;
+    background: var(--bg-elev);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+  }
+  .app-body.light { background: var(--fg); }
+  .app-body img { max-width: 100%; height: auto; }
+
+  /* TAGLINES */
+  .taglines { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .tagline-card {
+    padding: 36px;
+    border-radius: 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+  .tagline-card:hover { border-color: var(--lime); }
+  .tagline-card.featured {
+    background: linear-gradient(135deg, rgba(212, 255, 0, 0.08), rgba(6, 182, 212, 0.04));
+    border-color: rgba(212, 255, 0, 0.3);
+  }
+  .tagline-card .num { font-family: var(--mono); color: var(--lime); font-size: 0.7rem; margin-bottom: 16px; letter-spacing: 0.2em; }
+  .tagline-card .t {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 1.6rem;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    color: var(--fg);
+    margin-bottom: 16px;
+  }
+  .tagline-card .t .lime { color: var(--lime); }
+  .tagline-card .why { font-size: 0.85rem; color: var(--fg-muted); line-height: 1.5; }
+
+  /* FOOTER */
+  footer {
+    padding: 80px 0 40px;
+    border-top: 1px solid var(--border);
+    position: relative;
+    z-index: 2;
+  }
+  footer .container { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 32px; }
+  footer h3 {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: clamp(2rem, 5vw, 4rem);
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+  footer h3 .lime { color: var(--lime); }
+  footer .meta { font-family: var(--mono); font-size: 0.7rem; color: var(--fg-dim); letter-spacing: 0.2em; text-align: right; }
+
+  @media (max-width: 900px) {
+    .bento { grid-template-columns: 1fr 1fr; }
+    .span-2, .span-3, .span-4, .span-6 { grid-column: span 2; }
+    .palette { grid-template-columns: repeat(2, 1fr); }
+    .type-grid, .taglines { grid-template-columns: 1fr; }
+    .type-card.full { grid-column: span 1; }
+    .apps { grid-template-columns: 1fr; }
+    .apps .span-3, .apps .span-2, .apps .span-4, .apps .span-6 { grid-column: span 1; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="mesh"></div>
+  <div class="grid-bg"></div>
+  <div class="hero-content">
+    <div class="hero-meta">
+      <img src="logo-reverse.svg" alt="trocado" class="hero-mark">
+      <div class="label">v.001 · 2026.05.13 · RJ</div>
+    </div>
+    <h1>
+      Leandro<br>
+      Trocado<span class="accent">.</span>
+    </h1>
+    <p class="hero-tagline">Direção é o novo recurso. Sistemas, IA, decisão e <em>movimento intencional</em> para quem opera entre o técnico e o estratégico.</p>
+  </div>
+  <div class="hero-scroll">
+    <span class="arrow">▸</span> scroll para o sistema
+  </div>
+  <div class="hero-coord">LAT −22.9068 · LON −43.1729</div>
+</header>
+
+<section>
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="section-num">// 01 · CONCEITO</div>
+        <h2>Vector. <span class="cyan">Não posição</span>, mas <span class="accent">direção</span>.</h2>
+      </div>
+      <p class="lede">O sobrenome "Trocado" guarda uma palavra de movimento — transformação, intercâmbio, deslocamento. A marca pega esse núcleo e o entrega como velocidade aplicada.</p>
+    </div>
+
+    <div class="bento">
+      <div class="tile concept-tile span-4 row-2">
+        <span class="label">// system.concept</span>
+        <h2>
+          <span class="cyan">Rastro</span> +<br>
+          <span class="lime">vetor</span> +<br>
+          <span class="orange">alvo.</span>
+        </h2>
+        <dl class="concept-decode">
+          <dt>RASTRO</dt><dd>Chevron ciano semi-transparente. Memória, contexto, repertório acumulado.</dd>
+          <dt>VETOR</dt><dd>Chevron lime sólido. Direção atual, decisão presente, foco.</dd>
+          <dt>ALVO</dt><dd>Ponto laranja na ponta. Resultado esperado, intenção, próximo movimento.</dd>
+          <dt>LEITURA</dt><dd>Trajetória que vai do passado ao próximo passo. Movimento intencional sobre infraestrutura sólida.</dd>
+        </dl>
+      </div>
+
+      <div class="tile span-2">
+        <span class="label label-cyan">// trait.01</span>
+        <h3>Inovação <span style="color:var(--lime)">↗</span></h3>
+        <p>IA aplicada, automação, decisão assistida. A marca olha para frente sem virar costas para o passado.</p>
+      </div>
+
+      <div class="tile span-2">
+        <span class="label label-cyan">// trait.02</span>
+        <h3>Clear thinking <span style="color:var(--cyan-soft)">∴</span></h3>
+        <p>Reduzir ruído, isolar variável, mover em vetor. Pensamento sistêmico em ação.</p>
+      </div>
+
+      <div class="tile span-2">
+        <span class="label label-cyan">// trait.03</span>
+        <h3>Harness <span style="color:var(--orange)">⌘</span></h3>
+        <p>Infraestrutura como arnês: não prende, conduz. Sistemas que sustentam expansão.</p>
+      </div>
+
+      <div class="tile span-3">
+        <span class="label label-cyan">// trait.04</span>
+        <h3>Travel <span style="color:var(--lime)">→</span></h3>
+        <p>Movimento entre territórios — técnico, estratégico, internacional, intelectual. Curiosidade como método operacional.</p>
+      </div>
+
+      <div class="tile span-3">
+        <span class="label label-cyan">// trait.05</span>
+        <h3>Maturidade técnica <span style="color:var(--orange)">⏲</span></h3>
+        <p>20+ anos de prática. A marca não precisa gritar; ela é precisa, calibrada, sem floreio.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="section-num">// 02 · MARCA</div>
+        <h2>O <span class="accent">mark</span> em contexto.</h2>
+      </div>
+      <p class="lede">Três tratamentos cobrem todas as superfícies — claro, escuro e monocromático (herda cor via currentColor).</p>
+    </div>
+
+    <div class="bento">
+      <div class="tile span-2" style="padding: 0;">
+        <div class="mark-display light">
+          <span class="label label-pos label-muted">// 01 light</span>
+          <img src="logo-primary.svg" alt="Mark primary">
+        </div>
+      </div>
+      <div class="tile span-2" style="padding: 0;">
+        <div class="mark-display dark">
+          <span class="label label-pos">// 02 dark</span>
+          <img src="logo-reverse.svg" alt="Mark reverse">
+        </div>
+      </div>
+      <div class="tile span-2" style="padding: 0;">
+        <div class="mark-display lime">
+          <span class="label label-pos" style="color: var(--bg);">// 03 mono</span>
+          <div style="color: var(--bg); width: 100%;">
+            <svg viewBox="0 0 180 160" style="width:100%;">
+              <path d="M 20 30 L 80 80 L 20 130" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
+              <path d="M 70 30 L 130 80 L 70 130" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="130" cy="80" r="9" fill="currentColor"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="section-num">// 03 · PALETA</div>
+        <h2>Cinco cores. <span class="accent">Zero pedido de licença.</span></h2>
+      </div>
+      <p class="lede">Base preta off-black. Lime ácido como direção. Cyana elétrico como contexto. Laranja laser como objetivo. Off-white como respiro.</p>
+    </div>
+
+    <div class="palette">
+      <div class="swatch sw-bg">
+        <div>
+          <div class="swatch-name">Off-black</div>
+          <div class="swatch-desc">Base · estrutura</div>
+        </div>
+        <div class="swatch-meta">#0A0A0A</div>
+      </div>
+      <div class="swatch sw-lime">
+        <div>
+          <div class="swatch-name">Acid Lime</div>
+          <div class="swatch-desc">Direção · primary</div>
+        </div>
+        <div class="swatch-meta">#D4FF00</div>
+      </div>
+      <div class="swatch sw-cyan">
+        <div>
+          <div class="swatch-name">Electric Cyan</div>
+          <div class="swatch-desc">Rastro · secondary</div>
+        </div>
+        <div class="swatch-meta">#06B6D4</div>
+      </div>
+      <div class="swatch sw-orange">
+        <div>
+          <div class="swatch-name">Laser Orange</div>
+          <div class="swatch-desc">Alvo · accent</div>
+        </div>
+        <div class="swatch-meta">#FB923C</div>
+      </div>
+      <div class="swatch sw-fg">
+        <div>
+          <div class="swatch-name">Off-white</div>
+          <div class="swatch-desc">Texto · neutro</div>
+        </div>
+        <div class="swatch-meta">#FAFAFA</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="section-num">// 04 · TIPOGRAFIA</div>
+        <h2>Grotesque variable + mono <span class="accent">técnica.</span></h2>
+      </div>
+      <p class="lede">Space Grotesk para tudo que tem voz. JetBrains Mono para tudo que tem dado. Sem serifa, sem licença criativa, sem ruído.</p>
+    </div>
+
+    <div class="type-grid">
+      <div class="type-card full">
+        <span class="label">// display · Space Grotesk · 700</span>
+        <div class="display-sample">
+          <span class="light">Não posição.</span><br>
+          <span class="lime">Direção.</span>
+        </div>
+      </div>
+
+      <div class="type-card">
+        <span class="label">// body · Space Grotesk · 400</span>
+        <p class="body-sample">Gerente de TI numa Entidade Fechada de Previdência Complementar, com vinte anos de prática em desenvolvimento, análise e gestão. Pensamento sistêmico aplicado à automação, IA e tradução de regulação em sistema executável.</p>
+      </div>
+
+      <div class="type-card">
+        <span class="label">// mono · JetBrains Mono · 500</span>
+        <pre class="mono-sample"><span class="comment">// stack.signature</span>
+<span class="kw">const</span> trocado = (input) =&gt; {
+  <span class="kw">return</span> input
+    .map(decode)
+    .filter(useful)
+    .reduce(toDirection);
+};</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="section-num">// 05 · APLICAÇÕES</div>
+        <h2>Sistema <span class="accent">no campo</span>.</h2>
+      </div>
+      <p class="lede">Cinco peças prontas. SVGs vetoriais — exporte PNG na resolução que quiser. Abra os arquivos na pasta brand/.</p>
+    </div>
+
+    <div class="apps">
+      <div class="app span-6">
+        <div class="app-head">
+          <span class="app-title">Banner LinkedIn</span>
+          <span class="label label-muted">1584 × 396 · linkedin-banner.svg</span>
+        </div>
+        <div class="app-body">
+          <img src="linkedin-banner.svg" alt="LinkedIn banner" style="max-width: 100%;">
+        </div>
+      </div>
+
+      <div class="app span-2">
+        <div class="app-head">
+          <span class="app-title">Avatar social</span>
+          <span class="label label-muted">1024²</span>
+        </div>
+        <div class="app-body">
+          <img src="avatar-1024.svg" alt="Avatar" style="max-width: 240px; border-radius: 50%;">
+        </div>
+      </div>
+
+      <div class="app span-4">
+        <div class="app-head">
+          <span class="app-title">Assinatura e-mail</span>
+          <span class="label label-muted">email-signature.svg</span>
+        </div>
+        <div class="app-body">
+          <img src="email-signature.svg" alt="Assinatura" style="max-width: 100%;">
+        </div>
+      </div>
+
+      <div class="app span-4">
+        <div class="app-head">
+          <span class="app-title">Wordmark light</span>
+          <span class="label label-muted">wordmark.svg</span>
+        </div>
+        <div class="app-body light">
+          <img src="wordmark.svg" alt="Wordmark" style="max-width: 100%;">
+        </div>
+      </div>
+
+      <div class="app span-2">
+        <div class="app-head">
+          <span class="app-title">Favicon</span>
+          <span class="label label-muted">favicon.svg</span>
+        </div>
+        <div class="app-body" style="gap: 24px; display: flex;">
+          <img src="favicon.svg" alt="" style="width: 16px;">
+          <img src="favicon.svg" alt="" style="width: 32px;">
+          <img src="favicon.svg" alt="" style="width: 64px;">
+          <img src="favicon.svg" alt="" style="width: 96px;">
+        </div>
+      </div>
+
+      <div class="app span-6">
+        <div class="app-head">
+          <span class="app-title">Wordmark dark</span>
+          <span class="label label-muted">wordmark-short.svg · use em apresentações, capas, fundos escuros</span>
+        </div>
+        <div class="app-body">
+          <img src="wordmark-short.svg" alt="Wordmark short" style="max-width: 70%;">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="section-num">// 06 · VOZ</div>
+        <h2>Três <span class="accent">taglines</span>. Escolhe uma.</h2>
+      </div>
+      <p class="lede">A primeira é a recomendada: bilíngue, futurista, defensável em LinkedIn internacional. Alternativas em português pra contexto institucional.</p>
+    </div>
+
+    <div class="taglines">
+      <div class="tagline-card featured">
+        <div class="num">// 01 · RECOMENDADA</div>
+        <div class="t">Direction is the new <span class="lime">asset</span>.</div>
+        <div class="why">Provocativa, tech, internacional. Posiciona Leandro como gestor que entrega direção — não só execução. Funciona em LinkedIn, slides em inglês, perfil bio.</div>
+      </div>
+
+      <div class="tagline-card">
+        <div class="num">// 02</div>
+        <div class="t">Pensamento <span class="lime">vetorial</span>.</div>
+        <div class="why">Versão curta em pt-BR. Captura clear thinking + intencionalidade. Boa para apresentações internas, e-mail signature, papel timbrado.</div>
+      </div>
+
+      <div class="tagline-card">
+        <div class="num">// 03</div>
+        <div class="t">Do sinal <span class="lime">à direção</span>.</div>
+        <div class="why">Versão narrativa. Sugere o processo: receber ruído, devolver vetor. Boa para palestras, artigos, posicionamento de consultoria.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <h3>
+      trocado<span class="lime">.</span>
+    </h3>
+    <div class="meta">
+      VECTOR IDENTITY · v.001<br>
+      2026.05.13 · RJ<br>
+      // commit: this is just the beginning
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

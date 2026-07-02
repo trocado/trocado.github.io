@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 200" role="img" aria-label="trocado">
+  <title>trocado — wordmark vector</title>
+  <defs>
+    <linearGradient id="lime-w" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#D4FF00"/>
+      <stop offset="100%" stop-color="#A3E635"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(20, 20)">
+    <path d="M 20 30 L 80 80 L 20 130" fill="none" stroke="#06B6D4" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
+    <path d="M 70 30 L 130 80 L 70 130" fill="none" stroke="url(#lime-w)" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="130" cy="80" r="9" fill="#FB923C"/>
+  </g>
+  <!-- Wordmark grotesque -->
+  <text x="200" y="135" font-family="'Space Grotesk', 'Inter', sans-serif" font-weight="700" font-size="110" fill="#0A0A0A" letter-spacing="-5">trocado</text>
+  <!-- Acento -->
+  <circle cx="855" cy="135" r="10" fill="#D4FF00" stroke="#0A0A0A" stroke-width="2"/>
+</svg>

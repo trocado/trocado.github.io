@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leandro Trocado · The Operator. Engage.</title>
+<meta name="description" content="Direção estratégica sob demanda. AI-First, SegInfo, Governança, KPIs, PDTI/PETI e resposta a incidentes para operações que não podem parar.">
+<meta property="og:title" content="Leandro Trocado · The Operator. Engage.">
+<meta property="og:description" content="Direção estratégica sob demanda para operações que não podem parar.">
+<link rel="icon" type="image/svg+xml" href="brand/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #05080F;
+    --bg-2: #0A0F1A;
+    --bg-card: #0F1420;
+    --bg-card-2: #131929;
+    --border: #1E2433;
+    --border-hot: #2D3548;
+    --border-live: #374151;
+    --fg: #F4F4F5;
+    --fg-muted: #8B8FA3;
+    --fg-dim: #5A607A;
+    --fg-deep: #3A4055;
+    --lime: #D4FF00;
+    --lime-deep: #A3E635;
+    --cyan: #22D3EE;
+    --cyan-deep: #06B6D4;
+    --orange: #FB923C;
+    --red: #EF4444;
+    --green: #10B981;
+    --sans: 'Space Grotesk', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: var(--bg); scroll-behavior: smooth; }
+  body {
+    font-family: var(--mono);
+    color: var(--fg);
+    background: var(--bg);
+    line-height: 1.5;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  ::selection { background: var(--lime); color: var(--bg); }
+  a { color: inherit; text-decoration: none; }
+
+  /* Scanlines overlay */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 2px,
+        rgba(255, 255, 255, 0.012) 2px,
+        rgba(255, 255, 255, 0.012) 3px
+      );
+    pointer-events: none;
+    z-index: 1;
+  }
+  /* Noise */
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 2;
+    mix-blend-mode: overlay;
+  }
+
+  /* COMMAND BAR (top) */
+  .cmd-bar {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: 36px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center;
+    padding: 0 16px;
+    z-index: 100;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--fg-muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .cmd-bar .seg { display: flex; align-items: center; gap: 16px; }
+  .cmd-bar .sep { color: var(--fg-deep); }
+  .cmd-bar .live { color: var(--lime); display: inline-flex; align-items: center; gap: 8px; }
+  .cmd-bar .live::before {
+    content: '';
+    display: inline-block;
+    width: 7px; height: 7px;
+    background: var(--lime);
+    box-shadow: 0 0 10px var(--lime);
+    animation: blink 1.4s ease-in-out infinite;
+  }
+  @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
+  .cmd-bar .nav-link { color: var(--fg-muted); transition: color 0.15s; }
+  .cmd-bar .nav-link:hover { color: var(--lime); }
+  .cmd-bar .ts { color: var(--cyan); font-variant-numeric: tabular-nums; }
+  @media (max-width: 900px) { .cmd-bar .hide-m { display: none; } }
+
+  .wrap {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 32px;
+    position: relative;
+    z-index: 3;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    padding-top: 36px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-grid-bg {
+    position: absolute;
+    inset: 36px 0 0 0;
+    background-image:
+      linear-gradient(rgba(34, 211, 238, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(34, 211, 238, 0.04) 1px, transparent 1px);
+    background-size: 64px 64px;
+    pointer-events: none;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+  }
+  .hero-glow {
+    position: absolute;
+    width: 800px; height: 800px;
+    top: 20%; left: 60%;
+    background: radial-gradient(circle, rgba(212, 255, 0, 0.12) 0%, transparent 60%);
+    pointer-events: none;
+    animation: pulse-glow 8s ease-in-out infinite;
+  }
+  @keyframes pulse-glow {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); }
+  }
+
+  .hero-top {
+    padding-top: 32px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    z-index: 3;
+  }
+  .hero-top-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 24px 32px;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .hero-callsign {
+    display: flex; align-items: center; gap: 16px;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--fg-muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .hero-callsign img { width: 32px; }
+  .hero-callsign .name { color: var(--fg); font-weight: 600; }
+  .hero-callsign .dot { color: var(--fg-deep); }
+  .hero-stats {
+    display: flex; gap: 32px;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--fg-muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .hero-stats span { color: var(--fg); }
+  .hero-stats .ok { color: var(--lime); }
+
+  .hero-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 0;
+    position: relative;
+    z-index: 3;
+  }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 10px 18px;
+    border: 1px solid var(--border);
+    background: rgba(212, 255, 0, 0.04);
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--lime);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 48px;
+    align-self: flex-start;
+  }
+  .hero-tag .marker {
+    width: 6px; height: 6px;
+    background: var(--lime);
+    box-shadow: 0 0 12px var(--lime);
+    animation: blink 1.4s ease-in-out infinite;
+  }
+
+  .hero-title {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: clamp(3rem, 11vw, 11rem);
+    letter-spacing: -0.06em;
+    line-height: 0.88;
+    color: var(--fg);
+    margin-bottom: 32px;
+    position: relative;
+  }
+  .hero-title .glitch { position: relative; display: inline-block; }
+  .hero-title .glitch::before,
+  .hero-title .glitch::after {
+    content: attr(data-text);
+    position: absolute; top: 0; left: 0; right: 0;
+    pointer-events: none;
+  }
+  .hero-title .glitch::before {
+    color: var(--cyan);
+    transform: translate(-2px, 0);
+    mix-blend-mode: screen;
+    opacity: 0.7;
+    clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+    animation: glitch-1 4s infinite linear alternate;
+  }
+  .hero-title .glitch::after {
+    color: var(--lime);
+    transform: translate(2px, 0);
+    mix-blend-mode: screen;
+    opacity: 0.7;
+    clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+    animation: glitch-2 4s infinite linear alternate;
+  }
+  @keyframes glitch-1 {
+    0%, 90%, 100% { transform: translate(-2px, 0); }
+    10% { transform: translate(-4px, 1px); }
+    30% { transform: translate(0, -1px); }
+    60% { transform: translate(-3px, 0); }
+  }
+  @keyframes glitch-2 {
+    0%, 90%, 100% { transform: translate(2px, 0); }
+    20% { transform: translate(4px, -1px); }
+    50% { transform: translate(0, 1px); }
+    80% { transform: translate(3px, 0); }
+  }
+  .hero-title .lime { color: var(--lime); }
+  .hero-title .stroke { -webkit-text-stroke: 2px var(--fg); color: transparent; }
+
+  .hero-sub {
+    font-family: var(--sans);
+    font-size: clamp(1.2rem, 2vw, 1.7rem);
+    line-height: 1.4;
+    color: var(--fg-muted);
+    max-width: 880px;
+    margin-bottom: 56px;
+    font-weight: 400;
+    letter-spacing: -0.005em;
+  }
+  .hero-sub strong { color: var(--fg); font-weight: 500; }
+  .hero-sub .lime { color: var(--lime); }
+  .hero-sub .cyan { color: var(--cyan); }
+
+  .hero-cta {
+    display: flex; gap: 12px; flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 14px;
+    padding: 22px 32px;
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: 1px solid;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    transition: left 0.5s;
+  }
+  .btn:hover::after { left: 100%; }
+  .btn-prime {
+    background: var(--lime);
+    color: var(--bg);
+    border-color: var(--lime);
+    box-shadow: 0 0 0 0 var(--lime);
+  }
+  .btn-prime:hover {
+    box-shadow: 0 0 32px rgba(212, 255, 0, 0.5);
+    transform: translateY(-2px);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--fg);
+    border-color: var(--border-hot);
+  }
+  .btn-ghost:hover { border-color: var(--lime); color: var(--lime); }
+  .btn .ar { transition: transform 0.2s; }
+  .btn:hover .ar { transform: translateX(4px); }
+
+  .hero-bottom {
+    border-top: 1px solid var(--border);
+    padding: 20px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--fg-dim);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    max-width: 1280px;
+    margin: 0 auto;
+    width: 100%;
+    position: relative;
+    z-index: 3;
+  }
+  .hero-bottom .scroll { color: var(--lime); }
+  .hero-bottom .coord { color: var(--cyan); font-variant-numeric: tabular-nums; }
+
+  /* SECTIONS */
+  section.block {
+    border-top: 1px solid var(--border);
+    padding: 120px 0;
+    position: relative;
+  }
+  .section-head {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 32px;
+    margin-bottom: 80px;
+    align-items: start;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-head .sec-num {
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--lime);
+    letter-spacing: 0.2em;
+    padding-top: 8px;
+  }
+  .section-head h2 {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: clamp(2.2rem, 6vw, 4.5rem);
+    letter-spacing: -0.045em;
+    line-height: 0.95;
+    color: var(--fg);
+    max-width: 980px;
+  }
+  .section-head h2 .lime { color: var(--lime); }
+  .section-head h2 .cyan { color: var(--cyan); }
+  .section-head h2 .stroke { -webkit-text-stroke: 1.5px var(--fg); color: transparent; }
+  .section-head .meta {
+    grid-column: 2;
+    margin-top: 24px;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--fg-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .section-head .meta span { color: var(--fg); }
+
+  /* DOMAINS GRID */
+  .domains {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .domain {
+    background: var(--bg-card);
+    padding: 32px;
+    position: relative;
+    transition: all 0.2s;
+    cursor: default;
+  }
+  .domain:hover { background: var(--bg-card-2); }
+  .domain.span-4 { grid-column: span 4; }
+  .domain.span-6 { grid-column: span 6; }
+  .domain.span-8 { grid-column: span 8; }
+  .domain.span-12 { grid-column: span 12; }
+  .domain .dhead {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--fg-muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .domain .dhead .id { color: var(--lime); }
+  .domain .dhead .status { display: flex; align-items: center; gap: 8px; color: var(--lime); }
+  .domain .dhead .status::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--lime);
+    box-shadow: 0 0 8px var(--lime);
+  }
+  .domain h3 {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: clamp(1.4rem, 2.4vw, 2rem);
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    color: var(--fg);
+    margin-bottom: 16px;
+  }
+  .domain h3 .accent { color: var(--lime); }
+  .domain p {
+    font-family: var(--sans);
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--fg-muted);
+    margin-bottom: 20px;
+  }
+  .domain .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .domain .tag {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--fg-muted);
+    border: 1px solid var(--border);
+    padding: 4px 8px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* PULLQUOTE / CTA inline */
+  .punch {
+    border: 1px solid var(--border);
+    padding: 64px;
+    margin: 0;
+    background: linear-gradient(135deg, rgba(212, 255, 0, 0.04) 0%, rgba(34, 211, 238, 0.02) 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .punch::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--lime);
+  }
+  .punch .label {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--lime);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .punch .quote {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: clamp(1.6rem, 3.5vw, 3rem);
+    letter-spacing: -0.035em;
+    line-height: 1.1;
+    color: var(--fg);
+    max-width: 1000px;
+  }
+  .punch .quote .lime { color: var(--lime); }
+  .punch .quote em { font-style: italic; font-weight: 400; color: var(--cyan); }
+
+  /* MATRIX */
+  .matrix {
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .matrix .mrow {
+    display: grid;
+    grid-template-columns: 240px 1fr 200px;
+    border-bottom: 1px solid var(--border);
+    transition: all 0.15s;
+  }
+  .matrix .mrow:last-child { border-bottom: none; }
+  .matrix .mrow.mhead {
+    background: var(--bg-card);
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--fg-muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .matrix .mrow.mhead > div { padding: 16px 24px; }
+  .matrix .mrow.mhead > div + div { border-left: 1px solid var(--border); }
+  .matrix .mrow:not(.mhead) { background: var(--bg); }
+  .matrix .mrow:not(.mhead):hover { background: var(--bg-card); }
+  .matrix .mrow > div { padding: 24px; }
+  .matrix .mrow > div + div { border-left: 1px solid var(--border); }
+  .matrix .capability {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--lime);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .matrix .delivers {
+    font-family: var(--sans);
+    font-size: 1.05rem;
+    color: var(--fg);
+    line-height: 1.45;
+    letter-spacing: -0.01em;
+  }
+  .matrix .delivers .muted { color: var(--fg-muted); }
+  .matrix .level {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--cyan);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .matrix .level .bar {
+    flex: 1;
+    height: 4px;
+    background: var(--border);
+    position: relative;
+  }
+  .matrix .level .bar::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--cyan);
+    width: var(--bar, 80%);
+    box-shadow: 0 0 8px var(--cyan);
+  }
+
+  /* READINESS / KPIs */
+  .readiness {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .kpi {
+    background: var(--bg-card);
+    padding: 40px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .kpi .klabel {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--fg-muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .kpi .klabel .status { color: var(--lime); }
+  .kpi .kvalue {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    letter-spacing: -0.05em;
+    line-height: 0.9;
+    color: var(--fg);
+    margin-bottom: 8px;
+  }
+  .kpi .kvalue .unit {
+    color: var(--lime);
+    font-weight: 400;
+    font-size: 0.45em;
+    font-style: italic;
+    letter-spacing: -0.02em;
+  }
+  .kpi .ksub {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--fg-muted);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    line-height: 1.5;
+  }
+  .kpi .ksub strong { color: var(--cyan); }
+
+  /* TARGETS / quem precisa de mim */
+  .targets {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .target {
+    background: var(--bg-card);
+    padding: 40px 32px;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .target:hover { background: var(--bg-card-2); }
+  .target .thead {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--lime);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .target h4 {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 1.3rem;
+    letter-spacing: -0.02em;
+    color: var(--fg);
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+  .target p {
+    font-family: var(--sans);
+    font-size: 0.95rem;
+    color: var(--fg-muted);
+    line-height: 1.5;
+  }
+
+  /* ENGAGE */
+  .engage-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .engage-primary {
+    background: var(--bg-card);
+    padding: 64px;
+    position: relative;
+    overflow: hidden;
+  }
+  .engage-primary::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 4px;
+    background: var(--lime);
+    box-shadow: 0 0 16px var(--lime);
+  }
+  .engage-primary .label {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--lime);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .engage-primary .label::before {
+    content: '';
+    width: 8px; height: 8px;
+    background: var(--lime);
+    box-shadow: 0 0 12px var(--lime);
+    animation: blink 1.4s ease-in-out infinite;
+  }
+  .engage-primary h3 {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: clamp(2rem, 4vw, 3.4rem);
+    letter-spacing: -0.04em;
+    line-height: 1;
+    margin-bottom: 24px;
+  }
+  .engage-primary h3 .lime { color: var(--lime); }
+  .engage-primary p {
+    font-family: var(--sans);
+    font-size: 1.15rem;
+    color: var(--fg-muted);
+    line-height: 1.5;
+    margin-bottom: 36px;
+    max-width: 520px;
+  }
+  .engage-primary .whatsapp-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    padding: 28px 36px;
+    background: var(--lime);
+    color: var(--bg);
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .engage-primary .whatsapp-btn::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: left 0.6s;
+  }
+  .engage-primary .whatsapp-btn:hover::after { left: 100%; }
+  .engage-primary .whatsapp-btn:hover {
+    box-shadow: 0 0 48px rgba(212, 255, 0, 0.6);
+    transform: translateY(-2px);
+  }
+  .engage-primary .whatsapp-btn .ar { transition: transform 0.2s; }
+  .engage-primary .whatsapp-btn:hover .ar { transform: translateX(6px); }
+  .engage-primary .phone {
+    margin-top: 24px;
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--fg-muted);
+    letter-spacing: 0.1em;
+  }
+  .engage-primary .phone strong { color: var(--cyan); font-size: 1.1rem; letter-spacing: 0.05em; }
+
+  .engage-side {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+  }
+  .engage-channel {
+    background: var(--bg-card);
+    padding: 36px;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .engage-channel:hover { background: var(--bg-card-2); }
+  .engage-channel .label {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--fg-muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .engage-channel .v {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: clamp(1.4rem, 2.5vw, 2rem);
+    letter-spacing: -0.025em;
+    line-height: 1;
+    color: var(--fg);
+    margin-top: 12px;
+  }
+  .engage-channel .v .ar {
+    color: var(--lime);
+    transition: transform 0.2s;
+    display: inline-block;
+    margin-left: 6px;
+  }
+  .engage-channel:hover .v .ar { transform: translate(4px, -4px); }
+  .engage-channel .hint {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--fg-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 20px;
+  }
+
+  /* PROOF / TRUST band */
+  .proof {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 40px 0;
+    background: var(--bg-2);
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--fg-muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    overflow: hidden;
+  }
+  .proof-strip {
+    display: flex;
+    gap: 64px;
+    align-items: center;
+    animation: scroll 35s linear infinite;
+    white-space: nowrap;
+  }
+  .proof-strip span { display: inline-flex; align-items: center; gap: 12px; }
+  .proof-strip span::before { content: '◆'; color: var(--lime); }
+  @keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* FOOTER */
+  footer.colofon {
+    border-top: 1px solid var(--border);
+    padding: 64px 0 32px;
+    position: relative;
+  }
+  .colofon-mark {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: clamp(3rem, 12vw, 11rem);
+    letter-spacing: -0.06em;
+    line-height: 0.85;
+    color: var(--fg);
+    margin-bottom: 48px;
+  }
+  .colofon-mark .lime { color: var(--lime); }
+  .colofon-mark .stroke { -webkit-text-stroke: 2px var(--fg-muted); color: transparent; }
+  .colofon-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 32px;
+    margin-bottom: 48px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+  }
+  .colofon-grid h5 {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--lime);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .colofon-grid p {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--fg-muted);
+    line-height: 1.7;
+    letter-spacing: 0.05em;
+  }
+  .colofon-grid a { color: var(--cyan); }
+  .colofon-grid a:hover { color: var(--lime); }
+  .colofon-bottom {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--fg-dim);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 1100px) {
+    .domain.span-4, .domain.span-6, .domain.span-8 { grid-column: span 6; }
+    .matrix .mrow { grid-template-columns: 180px 1fr 150px; }
+    .matrix .mrow.mhead > div, .matrix .mrow > div { padding: 16px 18px; }
+    .readiness { grid-template-columns: repeat(2, 1fr); }
+    .targets { grid-template-columns: 1fr; }
+    .engage-grid { grid-template-columns: 1fr; }
+    .engage-primary { padding: 40px 32px; }
+    .colofon-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 700px) {
+    .domains { grid-template-columns: 1fr; }
+    .domain.span-4, .domain.span-6, .domain.span-8, .domain.span-12 { grid-column: span 1; }
+    .matrix .mrow { grid-template-columns: 1fr; }
+    .matrix .mrow > div + div { border-left: none; border-top: 1px solid var(--border); }
+    .readiness { grid-template-columns: 1fr; }
+    .section-head { grid-template-columns: 1fr; gap: 16px; }
+    .section-head .meta { grid-column: 1; }
+    .punch { padding: 32px 24px; }
+    .wrap { padding: 0 20px; }
+    .hero-top-row { padding: 16px 20px; flex-direction: column; gap: 12px; align-items: flex-start; }
+    .hero-stats { flex-wrap: wrap; gap: 16px; }
+    .hero-bottom { padding: 16px 20px; flex-direction: column; gap: 8px; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cmd-bar">
+  <div class="seg">
+    <span class="live">SYSTEM ONLINE</span>
+    <span class="sep">//</span>
+    <span class="hide-m">CALLSIGN: TROCADO.LT</span>
+    <span class="sep hide-m">//</span>
+    <span class="hide-m">EDITION: v.4 · OPS</span>
+  </div>
+  <div class="seg">
+    <a href="#domains" class="nav-link">/domains</a>
+    <a href="#matrix" class="nav-link hide-m">/matrix</a>
+    <a href="#kpis" class="nav-link hide-m">/kpis</a>
+    <a href="#engage" class="nav-link">/engage</a>
+    <span class="sep hide-m">//</span>
+    <span class="ts hide-m" id="ts">--:--:--</span>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+
+  <div class="hero-top">
+    <div class="hero-top-row">
+      <div class="hero-callsign">
+        <img src="brand/logo-reverse.svg" alt="">
+        <span class="name">LEANDRO TROCADO</span>
+        <span class="dot">·</span>
+        <span>THE OPERATOR</span>
+      </div>
+      <div class="hero-stats">
+        <div>STATUS · <span class="ok">ENGAGED</span></div>
+        <div>UPTIME · <span>20Y+</span></div>
+        <div>LOCATION · <span>RJ·BR</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-main">
+    <div class="wrap">
+      <div class="hero-tag">
+        <span class="marker"></span>
+        Recrutamento aberto · oportunidades estratégicas
+      </div>
+
+      <h1 class="hero-title">
+        Direção<br>
+        estratégica.<br>
+        <span class="lime glitch" data-text="Sob demanda.">Sob demanda.</span>
+      </h1>
+
+      <p class="hero-sub">
+        AI-First, <strong>SegInfo, governança e sustentação</strong> para operações que <span class="lime">não podem parar</span>. Lidero equipes técnicas de alta performance, construo PDTIs e PETIs que entregam, e respondo a incidentes antes que virem manchete. <span class="cyan">Direção é o novo recurso.</span>
+      </p>
+
+      <div class="hero-cta">
+        <a href="https://wa.me/5521997510054?text=Ol%C3%A1%20Leandro%2C%20vi%20o%20seu%20site%20e%20quero%20conversar%20sobre%20uma%20oportunidade%20estrat%C3%A9gica." target="_blank" rel="noopener" class="btn btn-prime">
+          Conversar agora <span class="ar">→</span>
+        </a>
+        <a href="#domains" class="btn btn-ghost">
+          /ver domínios de operação
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-bottom">
+    <div><span class="scroll">▼</span> SCROLL // INTEL BRIEFING</div>
+    <div class="coord">22.9068°S · 43.1729°W</div>
+  </div>
+</header>
+
+<div class="proof">
+  <div class="proof-strip">
+    <span>AI-FIRST CULTURE</span>
+    <span>SEGURANÇA DA INFORMAÇÃO</span>
+    <span>GOVERNANÇA DE TI</span>
+    <span>PDTI · PETI</span>
+    <span>GESTÃO DE EQUIPES</span>
+    <span>KPIs ESTRATÉGICOS</span>
+    <span>RESPOSTA A INCIDENTES</span>
+    <span>SUSTENTAÇÃO ESCALÁVEL</span>
+    <span>COBIT 2019</span>
+    <span>CLEAR THINKING</span>
+    <!-- duplicate for infinite scroll -->
+    <span>AI-FIRST CULTURE</span>
+    <span>SEGURANÇA DA INFORMAÇÃO</span>
+    <span>GOVERNANÇA DE TI</span>
+    <span>PDTI · PETI</span>
+    <span>GESTÃO DE EQUIPES</span>
+    <span>KPIs ESTRATÉGICOS</span>
+    <span>RESPOSTA A INCIDENTES</span>
+    <span>SUSTENTAÇÃO ESCALÁVEL</span>
+    <span>COBIT 2019</span>
+    <span>CLEAR THINKING</span>
+  </div>
+</div>
+
+<section id="domains" class="block">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="sec-num">§ 01 // DOMAINS</div>
+      <div>
+        <h2>Nove <span class="lime">domínios</span> de operação ativa.</h2>
+      </div>
+      <div class="meta">
+        <div>STATUS: <span>OPERACIONAL</span></div>
+        <div>CLEARANCE: <span>NÍVEL EXECUTIVO</span></div>
+        <div>MODALIDADE: <span>SOB DEMANDA</span></div>
+      </div>
+    </div>
+
+    <div class="domains">
+      <div class="domain span-8">
+        <div class="dhead">
+          <span class="id">D-01 // AI-FIRST CULTURE</span>
+          <span class="status">PRIORIDADE MÁXIMA</span>
+        </div>
+        <h3>Não é projeto. É <span class="accent">cultura.</span> Construo cultura.</h3>
+        <p>Operações que tratam IA como "ferramenta" perdem o jogo. Operações que tratam IA como <strong style="color:var(--fg)">cultura instalada</strong> ganham composição. Fomento ritmo, prática e exemplo. Skills, agentes, MCPs e workflows direto na operação — não em deck.</p>
+        <div class="tags">
+          <span class="tag">claude api</span>
+          <span class="tag">agent skills</span>
+          <span class="tag">mcp</span>
+          <span class="tag">prompt engineering</span>
+          <span class="tag">change mgmt</span>
+        </div>
+      </div>
+
+      <div class="domain span-4">
+        <div class="dhead">
+          <span class="id">D-02 // SEGINFO</span>
+          <span class="status">ATIVO</span>
+        </div>
+        <h3>Resposta começa antes do <span class="accent">incidente.</span></h3>
+        <p>Política, prevenção, detecção, contenção e recuperação. Não corro atrás do estrago — desenho a operação para que o estrago não comece.</p>
+        <div class="tags">
+          <span class="tag">iso 27001</span>
+          <span class="tag">lgpd</span>
+          <span class="tag">soc</span>
+          <span class="tag">ir</span>
+        </div>
+      </div>
+
+      <div class="domain span-4">
+        <div class="dhead">
+          <span class="id">D-03 // GOVERNANÇA</span>
+          <span class="status">ATIVO</span>
+        </div>
+        <h3>Governança que <span class="accent">destrava.</span></h3>
+        <p>COBIT 2019 aplicado, não decorado. Comitês com agenda, decisão e dono. Trilho — não burocracia.</p>
+        <div class="tags">
+          <span class="tag">cobit 2019</span>
+          <span class="tag">comitês</span>
+          <span class="tag">policies</span>
+        </div>
+      </div>
+
+      <div class="domain span-4">
+        <div class="dhead">
+          <span class="id">D-04 // PDTI · PETI</span>
+          <span class="status">ATIVO</span>
+        </div>
+        <h3>Plano que <span class="accent">vira execução.</span></h3>
+        <p>Construção e execução de Planos Diretores e Estratégicos com horizonte de 3-5 anos. Costurando inovação, segurança e modernização sem perder o agora.</p>
+        <div class="tags">
+          <span class="tag">pdti</span>
+          <span class="tag">peti</span>
+          <span class="tag">roadmap</span>
+        </div>
+      </div>
+
+      <div class="domain span-4">
+        <div class="dhead">
+          <span class="id">D-05 // TEAMS</span>
+          <span class="status">ATIVO</span>
+        </div>
+        <h3>Times de alta <span class="accent">performance.</span></h3>
+        <p>Liderança de squads e times multifuncionais. Migração consciente de controle para confiança estruturada. Mentoria, ritos, métricas e clareza.</p>
+        <div class="tags">
+          <span class="tag">leadership</span>
+          <span class="tag">squads</span>
+          <span class="tag">mentoria</span>
+          <span class="tag">ritos</span>
+        </div>
+      </div>
+
+      <div class="domain span-4">
+        <div class="dhead">
+          <span class="id">D-06 // KPIs</span>
+          <span class="status">ATIVO</span>
+        </div>
+        <h3>KPI sem rito é <span class="accent">decoração.</span></h3>
+        <p>Métricas estratégicas, operacionais e de equipe construídas para virar decisão. Dashboards que mudam comportamento — não que enchem PowerPoint.</p>
+        <div class="tags">
+          <span class="tag">okrs</span>
+          <span class="tag">kpi tree</span>
+          <span class="tag">dashboards</span>
+        </div>
+      </div>
+
+      <div class="domain span-4">
+        <div class="dhead">
+          <span class="id">D-07 // FOCO ESTRATÉGICO</span>
+          <span class="status">ATIVO</span>
+        </div>
+        <h3>O que <span class="accent">cortar</span>, não só o que fazer.</h3>
+        <p>Estratégia é decisão de não fazer. Trago foco para portfólios inflados, prioridades enviesadas e iniciativas que não cabem no horizonte.</p>
+        <div class="tags">
+          <span class="tag">strategy</span>
+          <span class="tag">portfolio</span>
+          <span class="tag">prioritização</span>
+        </div>
+      </div>
+
+      <div class="domain span-4">
+        <div class="dhead">
+          <span class="id">D-08 // ENTREGAS</span>
+          <span class="status">ATIVO</span>
+        </div>
+        <h3>Foco no que <span class="accent">aterrissa.</span></h3>
+        <p>Execução com cadência. Critério de sucesso declarado antes do start. Entrega que produz outcome — não output em planilha.</p>
+        <div class="tags">
+          <span class="tag">delivery</span>
+          <span class="tag">cadence</span>
+          <span class="tag">outcome</span>
+        </div>
+      </div>
+
+      <div class="domain span-4">
+        <div class="dhead">
+          <span class="id">D-09 // SUSTENTAÇÃO</span>
+          <span class="status">ATIVO</span>
+        </div>
+        <h3>Ambientes <span class="accent">escaláveis</span> que não acordam ninguém.</h3>
+        <p>Observabilidade, capacidade, runbooks e processo de incident response. Operação que cresce sem que a equipe perca o fim de semana.</p>
+        <div class="tags">
+          <span class="tag">sre</span>
+          <span class="tag">observability</span>
+          <span class="tag">runbooks</span>
+          <span class="tag">on-call</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="punch" style="margin-top: 48px;">
+      <div class="label">// punchline</div>
+      <div class="quote">
+        Toda operação que cresce precisa de <span class="lime">direção que se mantenha intencional.</span> Senão, o ambiente cresce <em>e a coerência morre.</em>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="matrix" class="block">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="sec-num">§ 02 // CAPABILITY MATRIX</div>
+      <div>
+        <h2>O que <span class="lime">entrego</span> — em <span class="stroke">linguagem direta.</span></h2>
+      </div>
+      <div class="meta">
+        <div>FORMATO: <span>FRACIONÁRIO · ADVISORY · INTERIM</span></div>
+        <div>STACK: <span>LARAVEL · ORACLE · TALL · IA</span></div>
+      </div>
+    </div>
+
+    <div class="matrix">
+      <div class="mrow mhead">
+        <div>// capability</div>
+        <div>// o que aterrissa</div>
+        <div>// maturidade</div>
+      </div>
+
+      <div class="mrow">
+        <div class="capability">AI-First Culture</div>
+        <div class="delivers">Cultura instalada, skills personalizadas em produção, agentes especializados, automação de workflows críticos. <span class="muted">Resultado mensurável em horas economizadas e qualidade de saída.</span></div>
+        <div class="level"><span>SR</span><div class="bar" style="--bar: 95%"></div></div>
+      </div>
+
+      <div class="mrow">
+        <div class="capability">Segurança da Informação</div>
+        <div class="delivers">Política, gestão de riscos, controles, resposta a incidentes, conformidade. <span class="muted">Reduzir superfície sem travar negócio.</span></div>
+        <div class="level"><span>SR</span><div class="bar" style="--bar: 88%"></div></div>
+      </div>
+
+      <div class="mrow">
+        <div class="capability">Governança de TI</div>
+        <div class="delivers">COBIT 2019, comitês com cadência, decisões rastreáveis, alinhamento entre estratégia e operação. <span class="muted">Governança como tração — não freio.</span></div>
+        <div class="level"><span>SR</span><div class="bar" style="--bar: 92%"></div></div>
+      </div>
+
+      <div class="mrow">
+        <div class="capability">PDTI · PETI</div>
+        <div class="delivers">Construção, execução e revisão de planos diretores e estratégicos. <span class="muted">Plano que sobrevive ao ano em que foi feito.</span></div>
+        <div class="level"><span>SR</span><div class="bar" style="--bar: 90%"></div></div>
+      </div>
+
+      <div class="mrow">
+        <div class="capability">Gestão de equipes</div>
+        <div class="delivers">Liderança de times técnicos, ritos, mentoria, modelo de carreira, sucessão. <span class="muted">Time que entrega sem queimar.</span></div>
+        <div class="level"><span>SR</span><div class="bar" style="--bar: 87%"></div></div>
+      </div>
+
+      <div class="mrow">
+        <div class="capability">KPIs estratégicos</div>
+        <div class="delivers">Árvore de métricas, OKRs, dashboards executivos. <span class="muted">Métrica que muda decisão.</span></div>
+        <div class="level"><span>SR</span><div class="bar" style="--bar: 90%"></div></div>
+      </div>
+
+      <div class="mrow">
+        <div class="capability">Resposta a incidentes</div>
+        <div class="delivers">Processo, runbooks, comunicação, post-mortem honesto. <span class="muted">Preparar antes — agir durante — aprender depois.</span></div>
+        <div class="level"><span>SR</span><div class="bar" style="--bar: 85%"></div></div>
+      </div>
+
+      <div class="mrow">
+        <div class="capability">Sustentação escalável</div>
+        <div class="delivers">Observabilidade, capacity, on-call sustentável, redução de toil. <span class="muted">Ambientes que crescem sem dor.</span></div>
+        <div class="level"><span>SR</span><div class="bar" style="--bar: 85%"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="kpis" class="block">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="sec-num">§ 03 // READINESS</div>
+      <div>
+        <h2>Métricas <span class="lime">declaradas.</span> Públicas. Conferíveis.</h2>
+      </div>
+      <div class="meta">
+        <div>FONTE: <span>SELF-DECLARED · VERIFICÁVEL</span></div>
+        <div>LAST UPDATE: <span>2026.05.13</span></div>
+      </div>
+    </div>
+
+    <div class="readiness">
+      <div class="kpi">
+        <div class="klabel">
+          <span>// experiência</span>
+          <span class="status">●</span>
+        </div>
+        <div class="kvalue">20<span class="unit">+ anos</span></div>
+        <div class="ksub">TI <strong>contínua</strong> · da web ao executive layer</div>
+      </div>
+      <div class="kpi">
+        <div class="klabel">
+          <span>// estudo formal</span>
+          <span class="status">●</span>
+        </div>
+        <div class="kvalue">1067<span class="unit">h</span></div>
+        <div class="ksub">2022 → 2026 · <strong>~1h por dia útil</strong></div>
+      </div>
+      <div class="kpi">
+        <div class="klabel">
+          <span>// trilhas concluídas</span>
+          <span class="status">●</span>
+        </div>
+        <div class="kvalue">16<span class="unit"> trilhas</span></div>
+        <div class="ksub">Laravel · Rust · Tech Lead · COBIT 2019 · <strong>+12</strong></div>
+      </div>
+      <div class="kpi">
+        <div class="klabel">
+          <span>// frameworks</span>
+          <span class="status">●</span>
+        </div>
+        <div class="kvalue">8<span class="unit"> decisórios</span></div>
+        <div class="ksub">SCQA · OODA · GROW · PCRS · PREP · <strong>+3</strong></div>
+      </div>
+    </div>
+
+    <div class="punch" style="margin-top: 48px;">
+      <div class="label">// declaração</div>
+      <div class="quote">
+        Tudo isso vira <span class="lime">vantagem operacional</span> quando entra na sua operação.<br>
+        <em>Não é currículo — é depósito disponível.</em>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="targets" class="block">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="sec-num">§ 04 // TARGETS</div>
+      <div>
+        <h2>Para quem isso <span class="lime">funciona.</span></h2>
+      </div>
+      <div class="meta">
+        <div>MODELO: <span>ADVISORY · FRAÇÃO DE TEMPO · INTERIM</span></div>
+      </div>
+    </div>
+
+    <div class="targets">
+      <div class="target">
+        <div class="thead">/ T-01 // operações em escala</div>
+        <h4>Operações que cresceram mais rápido que a governança</h4>
+        <p>Quando o time dobra, a stack triplica e ninguém sabe mais onde está o critério de decisão. Entro para colocar trilho — sem matar velocidade.</p>
+      </div>
+      <div class="target">
+        <div class="thead">/ T-02 // ai-first em construção</div>
+        <h4>Empresas que precisam virar AI-First — sem pirotecnia</h4>
+        <p>Não é instalar Copilot. É reescrever o ritmo do time. Trago metodologia, skills, agentes e change management para que IA vire cultura, não slide.</p>
+      </div>
+      <div class="target">
+        <div class="thead">/ T-03 // seginfo & risco</div>
+        <h4>Áreas técnicas que precisam falar a língua do board</h4>
+        <p>Construo a ponte entre operação técnica e governança executiva. KPIs, comitês, narrativa de risco. Para que TI pare de ser caixa-preta na sala do board.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="engage" class="block">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="sec-num">§ 05 // ENGAGE</div>
+      <div>
+        <h2>Engajamento <span class="lime">direto.</span></h2>
+      </div>
+      <div class="meta">
+        <div>RESPOSTA: <span>USUALMENTE EM &lt; 24H ÚTEIS</span></div>
+        <div>FUSO: <span>UTC-3 · BR</span></div>
+      </div>
+    </div>
+
+    <div class="engage-grid">
+      <div class="engage-primary">
+        <div class="label">CANAL PRIMÁRIO · MAIS RÁPIDO</div>
+        <h3>WhatsApp <span class="lime">direto.</span><br>Sem secretária. Sem formulário.</h3>
+        <p>Texto curto sobre o contexto — operação, dor, prazo. Eu respondo se faz sentido pros dois lados.</p>
+        <a href="https://wa.me/5521997510054?text=Ol%C3%A1%20Leandro%2C%20vi%20o%20seu%20site%20e%20quero%20conversar%20sobre%20uma%20oportunidade%20estrat%C3%A9gica." target="_blank" rel="noopener" class="whatsapp-btn">
+          Iniciar conversa no WhatsApp <span class="ar">→</span>
+        </a>
+        <div class="phone">// número direto: <strong>+55 21 99751-0054</strong></div>
+      </div>
+
+      <div class="engage-side">
+        <a href="https://www.linkedin.com/in/trocado/" target="_blank" rel="noopener" class="engage-channel">
+          <div>
+            <div class="label">// LINKEDIN · TRAJETÓRIA</div>
+            <div class="v">/in/trocado<span class="ar">↗</span></div>
+          </div>
+          <div class="hint">currículo · formação · recomendações</div>
+        </a>
+        <a href="mailto:trocado@gmail.com?subject=Oportunidade%20estrat%C3%A9gica&body=Ol%C3%A1%20Leandro%2C%0A%0AVi%20o%20seu%20site%20e%20quero%20conversar%20sobre%3A%0A" class="engage-channel">
+          <div>
+            <div class="label">// EMAIL · FORMAL</div>
+            <div class="v">trocado@gmail.com<span class="ar">↗</span></div>
+          </div>
+          <div class="hint">propostas · contratos · documentação</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="punch" style="margin-top: 48px;">
+      <div class="label">// chamada final</div>
+      <div class="quote">
+        Se sua operação está em um <span class="lime">ponto de inflexão</span> — crescimento, transformação, incidente, virada de IA — <em>o vetor importa mais do que a velocidade.</em><br>
+        E o vetor começa com uma conversa.
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="colofon">
+  <div class="wrap">
+    <div class="colofon-mark">
+      <span class="stroke">Direction</span><br>
+      is the new <span class="lime">asset.</span>
+    </div>
+
+    <div class="colofon-grid">
+      <div>
+        <h5>// the operator</h5>
+        <p>Leandro Trocado · operador estratégico em TI, IA e governança · 20+ anos de prática contínua · base no Rio de Janeiro · disponível para engajamentos sob demanda em modelo advisory, fração de tempo ou interim leadership.</p>
+      </div>
+      <div>
+        <h5>// canais</h5>
+        <p>
+          WhatsApp · <a href="https://wa.me/5521997510054" target="_blank">+55 21 99751-0054</a><br>
+          Email · <a href="mailto:trocado@gmail.com">trocado@gmail.com</a><br>
+          LinkedIn · <a href="https://www.linkedin.com/in/trocado/" target="_blank">/in/trocado</a><br>
+          GitHub · <a href="https://github.com/trocado" target="_blank">/trocado</a>
+        </p>
+      </div>
+      <div>
+        <h5>// edições</h5>
+        <p>
+          v.4 · OPS · esta<br>
+          v.3 · light editorial · <a href="v3.html">/v3</a><br>
+          v.2 · dark bento · <a href="index.html">/index</a><br>
+          Brand book · <a href="brand/brand-preview.html">/brand</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="colofon-bottom">
+      <div>// trocado.com.br/v4 · ops edition</div>
+      <div>// engagement is open · transmit when ready</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Live clock no command bar
+  const ts = document.getElementById('ts');
+  function tick() {
+    const d = new Date();
+    const hh = String(d.getHours()).padStart(2, '0');
+    const mm = String(d.getMinutes()).padStart(2, '0');
+    const ss = String(d.getSeconds()).padStart(2, '0');
+    ts.textContent = `${hh}:${mm}:${ss} BRT`;
+  }
+  tick();
+  setInterval(tick, 1000);
+</script>
+
+</body>
+</html>

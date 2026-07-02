@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-label="trocado">
+  <title>trocado — avatar 1024</title>
+  <defs>
+    <radialGradient id="mesh1" cx="0.2" cy="0.2" r="0.8">
+      <stop offset="0%" stop-color="#06B6D4" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#06B6D4" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="mesh2" cx="0.9" cy="0.85" r="0.7">
+      <stop offset="0%" stop-color="#FB923C" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#FB923C" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="mesh3" cx="0.85" cy="0.15" r="0.6">
+      <stop offset="0%" stop-color="#D4FF00" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#D4FF00" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="lime-a" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#D4FF00"/>
+      <stop offset="100%" stop-color="#A3E635"/>
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="#0A0A0A"/>
+  <rect width="1024" height="1024" fill="url(#mesh1)"/>
+  <rect width="1024" height="1024" fill="url(#mesh2)"/>
+  <rect width="1024" height="1024" fill="url(#mesh3)"/>
+  <!-- Grid sutil para textura técnica -->
+  <g stroke="#FAFAFA" stroke-width="1" opacity="0.04">
+    <line x1="0" y1="256" x2="1024" y2="256"/>
+    <line x1="0" y1="512" x2="1024" y2="512"/>
+    <line x1="0" y1="768" x2="1024" y2="768"/>
+    <line x1="256" y1="0" x2="256" y2="1024"/>
+    <line x1="512" y1="0" x2="512" y2="1024"/>
+    <line x1="768" y1="0" x2="768" y2="1024"/>
+  </g>
+  <!-- Mark centralizado, scale 4 -->
+  <g transform="translate(152, 192) scale(4)">
+    <path d="M 20 30 L 80 80 L 20 130" fill="none" stroke="#67E8F9" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+    <path d="M 70 30 L 130 80 L 70 130" fill="none" stroke="url(#lime-a)" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="130" cy="80" r="9" fill="#FB923C"/>
+  </g>
+  <!-- Etiqueta técnica mono -->
+  <text x="60" y="980" font-family="'JetBrains Mono', monospace" font-weight="400" font-size="22" fill="#FAFAFA" opacity="0.45" letter-spacing="3">// VECTOR.LT</text>
+</svg>
