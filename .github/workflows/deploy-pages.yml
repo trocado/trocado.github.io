@@ -30,7 +30,6 @@ jobs:
           cp index.html pessoal.html _site/
           cp -r assets brand _site/
           touch _site/.nojekyll
-          echo "trocado.com.br" > _site/CNAME
 
       - name: Configura Pages
         uses: actions/configure-pages@v5
