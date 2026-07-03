@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, follow">
 <title>Leandro Trocado · Um jeito de olhar o mundo</title>
 <meta name="description" content="Ensaio pessoal: como penso, o que me move, meus valores, meus interesses e os aprendizados que a leitura me deu para a vida.">
 <meta property="og:title" content="Leandro Trocado · Um jeito de olhar o mundo">
@@ -431,6 +432,24 @@
     .foot-grid { grid-template-columns: 1fr; gap: 32px; }
     .foot-contact a .cl { min-width: 68px; }
   }
+
+  /* ROOTS · galeria de família */
+  .roots { padding: 100px 0; border-bottom: 1px solid var(--line); background: var(--bg-2); }
+  .roots-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 4px; }
+  .root-card {
+    background: var(--bg); border: 1px solid var(--line); border-radius: 14px;
+    overflow: hidden; display: flex; flex-direction: column; transition: all 0.25s;
+  }
+  .root-card:hover { transform: translateY(-3px); box-shadow: 0 16px 34px -18px rgba(0,0,0,0.2); border-color: var(--line-strong); }
+  .root-photo { aspect-ratio: 4/5; overflow: hidden; background: var(--bg-3); }
+  .root-photo img { width: 100%; height: 100%; object-fit: cover; display: block; filter: contrast(1.02) saturate(1.03); transition: transform 0.5s; }
+  .root-card:hover .root-photo img { transform: scale(1.04); }
+  .root-cap { padding: 16px 18px 18px; }
+  .root-cap .rc-name { font-family: var(--serif); font-size: 1.14rem; font-weight: 500; color: var(--fg); letter-spacing: -0.01em; line-height: 1.2; }
+  .root-cap .rc-rel { font-family: var(--mono); font-size: 0.66rem; color: var(--fg-muted); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 7px; }
+  .root-cap .rc-rel .mem { color: var(--green-deep); }
+  @media (max-width: 820px) { .roots-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 500px) { .roots-grid { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -449,6 +468,7 @@
     </a>
     <div class="top-links">
       <a href="#ensaio">Abertura</a>
+      <a href="#raizes">Raízes</a>
       <a href="#lentes">As lentes</a>
       <a href="#valores">Valores</a>
       <a href="#interesses">Interesses</a>
@@ -517,6 +537,41 @@
     <p class="body">
       Por isso estudo todo dia. Não por hobby, nem para colecionar diplomas. Estudo porque cada ideia nova é uma lente a mais para enxergar o mesmo mundo com mais nitidez. O que vem abaixo é um pouco disso: as lentes pelas quais vejo, o que me move quando a escolha é difícil, o que me interessa quando ninguém pede resultado, e o que os livros me deram para a vida.
     </p>
+  </div>
+</section>
+
+<section class="roots" id="raizes">
+  <div class="wrap">
+    <div class="sec-eyebrow"><span class="dot"></span>RAÍZES</div>
+    <h2 class="sec-title">Ninguém se faz sozinho. Estas são <span class="accent">as pessoas que me formaram.</span></h2>
+    <p class="sec-lede">Antes das ideias e dos livros, vieram elas: quem me criou, quem caminha comigo, quem já se foi e continua aqui. É de onde vem o meu jeito de olhar.</p>
+
+    <div class="roots-grid">
+      <div class="root-card">
+        <div class="root-photo"><img src="assets/photos/raiz-familia.jpg" alt="Leandro, Joyce e Gael" loading="lazy"></div>
+        <div class="root-cap"><div class="rc-name">Joyce e Gael</div><div class="rc-rel">esposa e filho</div></div>
+      </div>
+      <div class="root-card">
+        <div class="root-photo"><img src="assets/photos/raiz-mae-irma.jpg" alt="Dalva e Nathália" loading="lazy"></div>
+        <div class="root-cap"><div class="rc-name">Dalva e Nathália</div><div class="rc-rel">mãe e irmã</div></div>
+      </div>
+      <div class="root-card">
+        <div class="root-photo"><img src="assets/photos/raiz-pai.jpg" alt="Armando" loading="lazy"></div>
+        <div class="root-cap"><div class="rc-name">Armando</div><div class="rc-rel">meu pai</div></div>
+      </div>
+      <div class="root-card">
+        <div class="root-photo"><img src="assets/photos/raiz-avos.jpg" alt="Esperanza e Constantino" loading="lazy"></div>
+        <div class="root-cap"><div class="rc-name">Esperanza e Constantino</div><div class="rc-rel">avós que me criaram · <span class="mem">in memoriam</span></div></div>
+      </div>
+      <div class="root-card">
+        <div class="root-photo"><img src="assets/photos/raiz-ana-carmen.jpg" alt="Ana e Carmen" loading="lazy"></div>
+        <div class="root-cap"><div class="rc-name">Ana e Carmen</div><div class="rc-rel">tia e avó</div></div>
+      </div>
+      <div class="root-card">
+        <div class="root-photo"><img src="assets/photos/raiz-sogro.jpg" alt="Aldair" loading="lazy"></div>
+        <div class="root-cap"><div class="rc-name">Aldair</div><div class="rc-rel">meu sogro · <span class="mem">in memoriam</span></div></div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -736,9 +791,9 @@
       <div class="learn-theme-head"><span class="lt-tag">/ B</span><h3>Disciplina interior</h3></div>
       <div class="learn-entries">
         <div class="learn-entry">
-          <div class="le-book">365 Reflexões Estoicas</div>
-          <div class="le-author">Marco Aurélio · Sêneca · Epicteto</div>
-          <p class="le-text">Separo o que depende de mim do que não depende, e gasto energia só no primeiro grupo. Entre o estímulo e a resposta existe um espaço, e esse espaço é treinável. Não são os fatos que me perturbam, são as opiniões que formo às pressas sobre eles.</p>
+          <div class="le-book">Nagomi</div>
+          <div class="le-author">Ken Mogi</div>
+          <p class="le-text">Nem toda contradição é um problema para resolver. O equilíbrio não vem de escolher um lado (firmeza ou gentileza, tradição ou mudança), vem de harmonizar os dois. Convivência não exige concordância, exige harmonia, e isso vale tanto para uma equipe quanto para o que discorda dentro de mim.</p>
         </div>
         <div class="learn-entry">
           <div class="le-book">A Arte da Sabedoria</div>
@@ -762,14 +817,14 @@
           <p class="le-text">Cada sim a algo não essencial é um não a algo essencial, e não existe sim de graça. Se uma opção não é um sim claro, virou um não claro. Concentrar não é fazer mais rápido, é fazer menos coisas e ir mais fundo.</p>
         </div>
         <div class="learn-entry">
-          <div class="le-book">O Princípio 80/20</div>
-          <div class="le-author">Richard Koch</div>
-          <p class="le-text">Olho primeiro o desequilíbrio que já existe. Poucos projetos concentram quase todo o valor, poucos hábitos respondem por quase toda a satisfação. Trabalhar mais deixou de ser minha resposta padrão; trabalhar nos pontos certos tomou o lugar.</p>
+          <div class="le-book">Criando um Segundo Cérebro</div>
+          <div class="le-author">Tiago Forte</div>
+          <p class="le-text">Minha memória não foi feita para guardar tudo, então parei de exigir isso dela. Mantenho um sistema externo que lembra por mim e me devolve a coisa certa na hora certa. Mas o ponto não é arquivar: capturo só o que ressoa e destilo com o tempo, porque conhecimento parado não vira nada até virar entrega.</p>
         </div>
         <div class="learn-entry">
-          <div class="le-book">Sem Esforço</div>
-          <div class="le-author">Greg McKeown</div>
-          <p class="le-text">Troquei a pergunta "por que isso é tão difícil?" por "e se pudesse ser fácil?". Pessoas competentes complicam por reflexo, e eu sou uma delas. Exaustão não é prova de dedicação, costuma ser sinal de um processo mal desenhado.</p>
+          <div class="le-book">Sprint</div>
+          <div class="le-author">Jake Knapp</div>
+          <p class="le-text">Decisão importante não precisa de meses de reunião para começar a aprender. Prefiro comprimir o debate numa aposta rápida: uma fachada convincente, testada com poucos usuários reais em dias, não em trimestres. Errar barato e cedo ensina mais do que acertar tarde e caro.</p>
         </div>
       </div>
     </div>
@@ -783,9 +838,9 @@
           <p class="le-text">Uso o que me incomoda nos outros como espelho. O que nego em mim tende a aparecer projetado para fora, e reconhecer isso é mais honesto do que seguir apontando o dedo. Amadurecer, nessa leitura, não é ficar perfeito, é ficar inteiro.</p>
         </div>
         <div class="learn-entry">
-          <div class="le-book">Dicionário de Símbolos</div>
-          <div class="le-author">Chevalier & Gheerbrant</div>
-          <p class="le-text">Leio em camadas em vez de buscar um significado único. O mesmo objeto pode significar uma coisa e o seu contrário, e essa ambiguidade é o terreno de qualquer decisão real. Símbolos parecidos reaparecem em culturas sem contato, o que me deu uma noção concreta do que nos une por baixo das diferenças.</p>
+          <div class="le-book">As Rotas da Seda</div>
+          <div class="le-author">Peter Frankopan</div>
+          <p class="le-text">A história que me contaram punha a Europa no centro, e ela estava geograficamente errada. O motor da civilização foi a teia de rotas entre Oriente e Ocidente, por onde circularam não só mercadorias, mas religiões, tecnologias, ideias e até doenças. Passei a desconfiar de qualquer narrativa contada a partir de um único centro, e a olhar o mundo como rede, não como hierarquia.</p>
         </div>
         <div class="learn-entry">
           <div class="le-book">Uma Breve História do Tempo</div>

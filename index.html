@@ -362,29 +362,62 @@
     gap: 80px;
     align-items: start;
   }
-  .about-photo {
+  /* ABOUT terminal card */
+  .about-terminal {
     position: sticky;
     top: 100px;
-    aspect-ratio: 4/5;
-    border-radius: 16px;
+    border-radius: 14px;
     overflow: hidden;
-    box-shadow: 0 30px 60px -20px rgba(0,0,0,0.15), 0 8px 16px -8px rgba(0,0,0,0.08);
-    background: var(--bg-2);
+    background: #0C0C0B;
+    border: 1px solid #24241E;
+    box-shadow: 0 30px 60px -20px rgba(0,0,0,0.35), 0 10px 20px -10px rgba(0,0,0,0.25);
   }
-  .about-photo img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    object-position: 50% 30%;
-    filter: contrast(1.04) saturate(1.05);
-    display: block;
+  .term-bar {
+    display: flex; align-items: center; gap: 12px;
+    padding: 13px 16px;
+    background: #141412;
+    border-bottom: 1px solid #24241E;
   }
-  .about-photo-overlay {
-    position: absolute;
-    inset: 0;
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    border-radius: 16px;
-    pointer-events: none;
+  .term-dots { display: inline-flex; gap: 7px; }
+  .term-dots i { width: 11px; height: 11px; border-radius: 50%; display: block; }
+  .term-dots .d1 { background: #34D399; }
+  .term-dots .d2 { background: #22D3EE; }
+  .term-dots .d3 { background: #FB923C; }
+  .term-file {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: #7C7C74;
+    letter-spacing: 0.03em;
   }
+  .term-file .live { color: #34D399; }
+  .term-code {
+    margin: 0;
+    padding: 24px 22px 28px;
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    line-height: 1.9;
+    color: #CFCFC9;
+    overflow-x: auto;
+  }
+  .term-code .c  { color: #6B7268; }
+  .term-code .k  { color: #22D3EE; }
+  .term-code .v  { color: #F2F2EE; font-weight: 500; }
+  .term-code .pk { color: #9CA39A; }
+  .term-code .s  { color: #34D399; }
+  .term-code .n  { color: #FB923C; }
+  .term-code .pr { color: #22D3EE; }
+  .term-code .fn { color: #F2F2EE; }
+  .term-code .ok { color: #34D399; }
+  .term-code .o  { color: #9CA39A; }
+  .term-code .cur {
+    display: inline-block;
+    width: 8px; height: 1.05em;
+    background: #34D399;
+    margin-left: 3px;
+    vertical-align: -0.16em;
+    animation: blink 1.15s steps(1) infinite;
+  }
+  @keyframes blink { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
   .about-text {
     font-family: var(--sans);
     font-size: 1.18rem;
@@ -429,7 +462,8 @@
   }
   @media (max-width: 900px) {
     .about-grid { grid-template-columns: 1fr; gap: 48px; }
-    .about-photo { position: static; max-width: 460px; }
+    .about-terminal { position: static; max-width: 460px; }
+    .term-code { font-size: min(0.72rem, 2.7vw); padding: 20px 16px 24px; }
   }
 
   /* DO, 4 large areas, numbered sequence */
@@ -885,16 +919,32 @@
     </h2>
 
     <div class="about-grid">
-      <div class="about-photo">
-        <img src="assets/photos/leandro.jpg" alt="Leandro Trocado">
-        <div class="about-photo-overlay"></div>
+      <div class="about-terminal">
+        <div class="term-bar">
+          <span class="term-dots"><i class="d1"></i><i class="d2"></i><i class="d3"></i></span>
+          <span class="term-file">~/quem-sou.ts <span class="live">● live</span></span>
+        </div>
+<pre class="term-code"><span class="c">// composição, não rótulos separados</span>
+
+<span class="k">const</span> <span class="v">leandro</span> = {
+  <span class="pk">papel</span>:   [<span class="s">'CTO'</span>, <span class="s">'CISO'</span>, <span class="s">'IT Manager'</span>],
+  <span class="pk">desde</span>:   <span class="n">2001</span>,
+  <span class="pk">pratica</span>: <span class="s">'código na mão'</span>,
+  <span class="pk">ia</span>:      <span class="s">'AI-First instalado'</span>,
+  <span class="pk">regra</span>:   <span class="s">'direção antes de velocidade'</span>,
+  <span class="pk">aprende</span>: <span class="s">'todo dia útil'</span>,
+}
+
+<span class="pr">▸</span> <span class="fn">deploy</span>(leandro)
+  <span class="ok">✓</span> <span class="o">25 anos em produção</span>
+  <span class="ok">✓</span> <span class="o">direção instalada</span><span class="cur"></span></pre>
       </div>
 
       <div>
         <div class="about-text">
-          <p>Comecei em código no início dos anos 2000. Atravessei análise de sistemas, arquitetura e cheguei na liderança técnica executiva. Mas continuo <strong>escrevendo software, modelando solução e construindo agentes de IA</strong>, porque direção sem mão na massa vira ficção executiva.</p>
+          <p>Comecei a programar no início dos anos 2000. Atravessei análise de sistemas, arquitetura e cheguei na liderança técnica executiva. Mas continuo <strong>escrevendo software, modelando solução e construindo agentes de IA</strong>, porque direção sem mão na massa vira ficção executiva.</p>
 
-          <p>Hoje opero numa intersecção rara: <em>liderança técnica, arquitetura de soluções, AI engineering e governança de TI</em> na mesma cabeça. Não como rótulos separados, como composição. A operação moderna exige essas dimensões coexistindo, com a mesma lógica de decisão.</p>
+          <p>Hoje opero numa intersecção entre <em>liderança técnica, arquitetura de soluções, segurança cibernética, AI engineering e governança de TI</em>. Não como rótulos separados, como composição. A operação moderna exige essas dimensões coexistindo, com a mesma lógica de decisão.</p>
 
           <p>Trato regulação como restrição de design. Segurança como função estratégica. IA como cultura instalada, não Copilot ligado. Arquitetura como hipótese viva, ajustável, defensável.</p>
 
@@ -903,8 +953,8 @@
 
         <div class="about-meta">
           <div class="item">
-            <strong>20<span class="unit">+ anos</span></strong>
-            tecnologia contínua
+            <strong>25<span class="unit"> anos</span></strong>
+            trabalhando com tecnologia
           </div>
           <div class="item">
             <strong>4<span class="unit"> áreas</span></strong>
@@ -1074,14 +1124,15 @@
     <h2 class="sec-title">
       Conversas que <span class="accent">somam.</span>
     </h2>
-    <p class="sec-lede">Networking profissional, troca técnica, second opinion em decisões difíceis, debate sobre IA aplicada ou só uma boa conversa sobre liderança técnica. Canais abertos para quem trabalha com os mesmos temas.</p>
+    <p class="sec-lede">Networking profissional, troca técnica, segunda opinião em decisões difíceis, debate sobre IA aplicada ou só uma boa conversa sobre liderança técnica. Canais abertos para quem trabalha com os mesmos temas.</p>
 
     <div class="contact-grid">
       <div class="contact-primary">
         <div>
           <div class="lab">/ WhatsApp · canal mais rápido</div>
-          <h3>Conversa direta, sem intermediário ou formulário.</h3>
-          <p class="desc">Manda uma mensagem curta sobre o tema. Eu respondo se faz sentido para os dois lados.</p>
+          <h3>Conversa direta</h3>
+          <p class="desc">Sem intermediário ou formulário.</p>
+          <!-- <p class="desc">Manda uma mensagem curta sobre o tema. Eu respondo se faz sentido para os dois lados.</p> -->
         </div>
         <div>
           <a href="https://wa.me/5521997510054?text=Ol%C3%A1%20Leandro%2C%20vi%20o%20seu%20site%20e%20gostaria%20de%20trocar%20uma%20ideia." target="_blank" rel="noopener" class="wa-btn">
@@ -1138,6 +1189,76 @@
     </div>
   </div>
 </footer>
+
+<script>
+  // Digitação animada do card de terminal (progressive enhancement).
+  // Sem JS ou com prefers-reduced-motion, o código já aparece completo.
+  (function () {
+    document.addEventListener('DOMContentLoaded', function () {
+      var pre = document.querySelector('.term-code');
+      if (!pre) return;
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce) return;
+
+      function prepare() {
+        // Fixa a altura final para não haver salto de layout durante a digitação.
+        pre.style.minHeight = pre.offsetHeight + 'px';
+
+        var tokens = [];
+        pre.childNodes.forEach(function (node) {
+          if (node.nodeType === 3) tokens.push({ text: node.textContent, cls: null });
+          else if (node.nodeType === 1) tokens.push({ text: node.textContent, cls: node.className || null });
+        });
+
+        pre.textContent = '';
+        var cursor = document.createElement('span');
+        cursor.className = 'cur';
+        pre.appendChild(cursor);
+
+        var ti = 0, ci = 0, curSpan = null, curCls = false;
+        function step() {
+          if (ti >= tokens.length) return;
+          var tok = tokens[ti];
+          if (curCls !== tok.cls) {
+            curCls = tok.cls;
+            curSpan = document.createElement('span');
+            if (tok.cls) curSpan.className = tok.cls;
+            pre.insertBefore(curSpan, cursor);
+          }
+          var ch = tok.text.charAt(ci);
+          curSpan.textContent += ch;
+          ci++;
+          var delay = ch === '\n' ? 55 : 12;
+          if (ci >= tok.text.length) { ti++; ci = 0; }
+          setTimeout(step, delay);
+        }
+
+        var started = false;
+        function start() { if (started) return; started = true; step(); }
+
+        if ('IntersectionObserver' in window) {
+          var io = new IntersectionObserver(function (entries, obs) {
+            entries.forEach(function (e) {
+              if (e.isIntersecting) { obs.disconnect(); start(); }
+            });
+          }, { threshold: 0.35 });
+          io.observe(pre);
+          // Rede de segurança: garante o conteúdo mesmo se o observer não
+          // disparar em algum navegador atípico ou se a seção nunca for rolada.
+          setTimeout(start, 9000);
+        } else {
+          start();
+        }
+      }
+
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(prepare);
+      } else {
+        prepare();
+      }
+    });
+  })();
+</script>
 
 </body>
 </html>
