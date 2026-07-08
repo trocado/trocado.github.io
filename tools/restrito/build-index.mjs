@@ -8,12 +8,20 @@ import { fileURLToPath } from "node:url";
 const raiz = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const manifest = JSON.parse(readFileSync(join(raiz, "restrito", "manifest.json"), "utf8"));
 
+// Títulos privados: sobrepõem o título público do manifest apenas dentro do
+// índice, que vai ao git somente criptografado. O arquivo vive em
+// _restrito-src/ (gitignored) porque o manifest.json é público no repo.
+let titulosPrivados = {};
+try {
+  titulosPrivados = JSON.parse(readFileSync(join(raiz, "_restrito-src", "titulos.json"), "utf8"));
+} catch {}
+
 const itens = manifest.relatorios
   .slice()
   .sort((a, b) => b.data.localeCompare(a.data))
   .map(
     (r) =>
-      `        <li><span class="data">${r.data}</span> <a href="${r.arquivo}">${r.titulo}</a></li>`
+      `        <li><span class="data">${r.data}</span> <a href="${r.arquivo}">${titulosPrivados[r.arquivo] ?? r.titulo}</a></li>`
   )
   .join("\n");
 
