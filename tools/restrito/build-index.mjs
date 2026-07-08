@@ -37,7 +37,10 @@ const html = `<!DOCTYPE html>
     body { margin: 0; background: var(--bg); color: var(--fg); font-family: 'Inter', -apple-system, sans-serif; }
     main { max-width: 640px; margin: 0 auto; padding: 64px 24px; }
     h1 { font-size: 1.5rem; font-weight: 600; margin: 0 0 4px; }
-    .sub { color: var(--fg-muted); font-size: 0.9rem; margin: 0 0 32px; font-family: 'JetBrains Mono', monospace; }
+    .sub { color: var(--fg-muted); font-size: 0.9rem; margin: 0; font-family: 'JetBrains Mono', monospace; }
+    .topo { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin: 0 0 32px; }
+    .sair { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--fg-muted); border: 1px solid var(--line); border-radius: 6px; padding: 6px 14px; white-space: nowrap; }
+    .sair:hover { color: var(--green); border-color: var(--green); }
     .lista { list-style: none; padding: 0; margin: 0; }
     .lista li { padding: 14px 0; border-bottom: 1px solid var(--line); }
     .data { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--fg-muted); margin-right: 12px; }
@@ -50,8 +53,13 @@ const html = `<!DOCTYPE html>
 </head>
 <body>
   <main>
-    <h1>Relatórios</h1>
-    <p class="sub">área restrita · trocado.com.br</p>
+    <header class="topo">
+      <div>
+        <h1>Relatórios</h1>
+        <p class="sub">área restrita · trocado.com.br</p>
+      </div>
+      <a class="sair" href="?staticrypt_logout" title="Esquecer a senha neste navegador">sair</a>
+    </header>
     ${corpo}
     <footer><a href="/">voltar ao site</a></footer>
   </main>
