@@ -60,7 +60,7 @@ flowchart LR
 
 ## Tela de senha e índice
 
-- Template do StatiCrypt customizado: PT-BR, fundo dark, tipografia Space Grotesk, acentos lime/cyan, coerente com a identidade VECTOR do site.
+- Template do StatiCrypt customizado: PT-BR, paleta do site no ar (fundo #FAFAF7, verde #10B981, Inter + JetBrains Mono). Ajustado em relação ao rascunho original (dark/lime) porque o requisito dominante é coerência com o site publicado, que é light/emerald.
 - Índice descriptografado: lista com data, título e link de cada relatório.
 - Meta `noindex` no template e `robots.txt` com `Disallow: /restrito/` (cosmético; o conteúdo já está criptografado).
 
