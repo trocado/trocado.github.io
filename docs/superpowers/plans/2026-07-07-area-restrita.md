@@ -488,7 +488,7 @@ fi
 criptografar() {
   local nome="$1" titulo_pagina="$2"
   (cd "$RAIZ/_restrito-src" && STATICRYPT_PASSWORD="$SENHA" npx -y staticrypt@3 "$nome" \
-    -c "$RAIZ/.staticrypt.json" \
+    -c "../.staticrypt.json" \
     -d "$RAIZ/restrito" \
     --remember 30 \
     --short \
@@ -518,7 +518,14 @@ if [ "$SO_INDICE" -eq 0 ]; then
     TITULO="$(basename "$ARQUIVO" .html)"
   fi
   DATA="$(date +%Y-%m-%d)"
-  SLUG="$(printf '%s' "$TITULO" | iconv -f utf-8 -t ascii//TRANSLIT | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+|-+$//g')"
+  SLUG="$(node -e '
+    const t = process.argv[1];
+    console.log(
+      t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")
+    );
+  ' "$TITULO")"
+  # Nota: iconv//TRANSLIT falha no macOS atual (Darwin 25), por isso o slug via node.
   NOME_PUB="$DATA-$SLUG.html"
 
   # 3. Copia a fonte em claro para a área gitignored e criptografa.
