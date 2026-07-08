@@ -28,6 +28,12 @@ if [ "$SO_INDICE" -eq 0 ] && [ -z "$ARQUIVO" ]; then
   exit 1
 fi
 
+# 0. Sincroniza o repo do site antes de publicar (evita push rejeitado quando
+#    o origin está à frente; o script pode ser chamado de qualquer diretório).
+if [ "$SEM_PUSH" -eq 0 ]; then
+  git -C "$RAIZ" pull --rebase --autostash --quiet origin main
+fi
+
 # 1. Senha-mestre: lê do Keychain; cria se não existir.
 SENHA="$(security find-generic-password -s "$SERVICO_KEYCHAIN" -w 2>/dev/null || true)"
 if [ -z "$SENHA" ]; then
