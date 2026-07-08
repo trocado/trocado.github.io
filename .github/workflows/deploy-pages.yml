@@ -27,8 +27,8 @@ jobs:
       - name: Prepara conteudo publicavel (sem rascunhos)
         run: |
           mkdir -p _site
-          cp index.html pessoal.html _site/
-          cp -r assets brand _site/
+          cp index.html pessoal.html robots.txt _site/
+          cp -r assets brand restrito _site/
           touch _site/.nojekyll
           echo "trocado.com.br" > _site/CNAME
 
